@@ -1,0 +1,4 @@
+﻿regiao,cidade,estado,data_inicio,data_fim,dias_validos,faltantes_T2M,faltantes_T2M_MAX,faltantes_PRECTOTCORR,faltantes_RH2M
+Barueri/Tamboré,Barueri,SP,2025-01-01,2025-12-31,365,0,0,0,0
+Curitiba,Curitiba,PR,2025-01-01,2025-12-31,365,0,0,0,0
+Rio de Janeiro - Barra/Jacarepaguá/Parque Olímpico,Rio de Janeiro,RJ,2025-01-01,2025-12-31,365,0,0,0,0

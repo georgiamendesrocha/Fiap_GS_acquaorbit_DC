@@ -1,0 +1,4 @@
+﻿regiao,cidade,estado,latitude,longitude,temp_media,temp_maxima,temp_minima,precipitacao_anual_mm,umidade_media,vento_medio,radiacao_media,periodo_referencia,fonte_climatica,fonte_climatica_url,origem_dados_climaticos,dias_validos,data_inicio,data_fim
+Barueri/Tamboré,Barueri,SP,-23.5,-46.87,20.56,36.92,2.43,754.35,72.33,2.43,193.41,2025,NASA POWER,https://power.larc.nasa.gov/,real,365,2025-01-01,2025-12-31
+Rio de Janeiro - Barra/Jacarepaguá/Parque Olímpico,Rio de Janeiro,RJ,-22.97,-43.39,23.22,35.38,15.74,1011.26,78.81,2.62,198.77,2025,NASA POWER,https://power.larc.nasa.gov/,real,365,2025-01-01,2025-12-31
+Curitiba,Curitiba,PR,-25.43,-49.27,18.14,35.72,0.29,1135.64,78.86,0.95,185.3,2025,NASA POWER,https://power.larc.nasa.gov/,real,365,2025-01-01,2025-12-31
