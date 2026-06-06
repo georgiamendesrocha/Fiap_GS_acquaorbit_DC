@@ -17,7 +17,7 @@ Repositório: https://github.com/georgiamendesrocha/Fiap_GS_acquaorbit_DC
 | Item | Valor |
 |------|--------|
 | Link do vídeo | Aguardando link |
-| Concorrência ao pódio | Não (`config/entrega_gs.py` → `CONCORRER_PODIO`) |
+| Concorrência ao pódio | Sim |
 
 ## 👨‍🎓 Integrantes
 
