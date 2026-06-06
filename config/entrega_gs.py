@@ -9,4 +9,4 @@ Depois regenere o PDF: python menu.py -> opcao 10
 LINK_VIDEO_YOUTUBE = ""
 
 # True apenas se o grupo for concorrer ao podio (frase no PDF e no inicio do video)
-CONCORRER_PODIO = False
+CONCORRER_PODIO = True
