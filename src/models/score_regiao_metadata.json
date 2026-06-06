@@ -1,0 +1,33 @@
+{
+  "algoritmo": "RandomForestRegressor + StandardScaler",
+  "features": [
+    "temperatura_media_anual_c",
+    "temperatura_maxima_anual_c",
+    "precipitacao_total_anual_mm",
+    "umidade_media_anual_pct",
+    "velocidade_vento_media_anual_m_s",
+    "radiacao_solar_media_anual_kwh_m2_dia",
+    "risco_hidrico_score_0_10",
+    "risco_inundacao_score_0_10",
+    "sensibilidade_territorial_score_0_10",
+    "demanda_refrigeracao_score_0_10",
+    "potencial_pluvial_m3_ano",
+    "conectividade_critica_score_0_10",
+    "redundancia_fibra_score_0_10",
+    "disponibilidade_energetica_score_0_10",
+    "risco_rota_unica_score_0_10",
+    "resiliencia_operacional_score_0_10",
+    "ph_agua",
+    "turbidez_ntu",
+    "condutividade_us_cm",
+    "temperatura_agua_c"
+  ],
+  "target": "score_final_poc_0_10",
+  "amostras_treino": 290,
+  "amostras_teste": 73,
+  "mae_teste": 0.11,
+  "r2_teste": 0.9315,
+  "mae_regioes_reais": 0.0033,
+  "treinado_em": "2026-06-06 13:23:24",
+  "observacao": "Modelo introdutorio treinado com ampliacao sintetica a partir das 3 regioes oficiais da POC para viabilizar aprendizado supervisionado."
+}

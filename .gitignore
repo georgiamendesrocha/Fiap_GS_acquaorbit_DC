@@ -1,0 +1,19 @@
+# Credenciais locais
+.env
+.env.*
+!config/*.example.env
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+
+# Saidas locais temporarias
+.pytest_cache/
+
+# Sistema operacional e editores
+.DS_Store
+Thumbs.db
+.vscode/

@@ -1,0 +1,108 @@
+-- Acqua Orbit DC - Consultas Oracle de demonstracao
+--
+-- Execute este arquivo depois de:
+-- 1. Rodar scripts/database/01_criar_tabelas_oracle.sql no SQL Developer.
+-- 2. Rodar python src/pipeline/07_persistir_oracle_csv.py em modo Oracle.
+
+-- 1. Conferir quantidade de registros carregados em cada tabela.
+SELECT COUNT(*) AS TOTAL_REGIOES
+FROM AO_REGIOES;
+
+SELECT COUNT(*) AS TOTAL_INDICADORES
+FROM AO_INDICADORES;
+
+SELECT COUNT(*) AS TOTAL_RESULTADOS
+FROM AO_RESULTADOS_POC;
+
+-- 2. Ranking final das regioes avaliadas.
+SELECT
+    r.CIDADE,
+    r.ESTADO,
+    p.SCORE_FINAL,
+    p.CLASS_FINAL
+FROM AO_REGIOES r
+JOIN AO_RESULTADOS_POC p
+    ON p.REGIAO_ID = r.REGIAO_ID
+ORDER BY p.SCORE_FINAL DESC;
+
+-- 3. Sensores simulados e classificacao de qualidade da agua.
+SELECT
+    r.CIDADE,
+    r.ESTADO,
+    p.NIVEL_RESERVATORIO_PCT,
+    p.PH_AGUA,
+    p.TURBIDEZ_NTU,
+    p.CONDUTIVIDADE_US_CM,
+    p.CLASS_QUALIDADE_AGUA
+FROM AO_REGIOES r
+JOIN AO_RESULTADOS_POC p
+    ON p.REGIAO_ID = r.REGIAO_ID
+ORDER BY p.QUALIDADE_AGUA_SCORE DESC;
+
+-- 4. Risco ambiental e climatico por regiao.
+SELECT
+    r.CIDADE,
+    r.ESTADO,
+    i.RISCO_HIDRICO_SCORE,
+    i.RISCO_INUNDACAO_SCORE,
+    i.SENSIBILIDADE_SCORE,
+    p.RISCO_AMB_CLIM_SCORE
+FROM AO_REGIOES r
+JOIN AO_INDICADORES i
+    ON i.REGIAO_ID = r.REGIAO_ID
+JOIN AO_RESULTADOS_POC p
+    ON p.REGIAO_ID = r.REGIAO_ID
+ORDER BY p.RISCO_AMB_CLIM_SCORE DESC;
+
+-- 5. Potencial de reuso pluvial.
+SELECT
+    r.CIDADE,
+    r.ESTADO,
+    i.PRECIP_TOTAL_ANUAL_MM,
+    i.AREA_CAPTACAO_M2,
+    i.CAPACIDADE_RESERVATORIO_L,
+    i.POTENCIAL_PLUVIAL_M3_ANO,
+    p.COBERTURA_REUSO_PCT,
+    p.POTENCIAL_REUSO_SCORE
+FROM AO_REGIOES r
+JOIN AO_INDICADORES i
+    ON i.REGIAO_ID = r.REGIAO_ID
+JOIN AO_RESULTADOS_POC p
+    ON p.REGIAO_ID = r.REGIAO_ID
+ORDER BY p.POTENCIAL_REUSO_SCORE DESC;
+
+-- 6. Infraestrutura critica e resiliencia ESG.
+SELECT
+    r.CIDADE,
+    r.ESTADO,
+    i.CONECTIVIDADE_SCORE,
+    i.REDUNDANCIA_SCORE,
+    i.ENERGIA_SCORE,
+    i.RISCO_ROTA_UNICA_SCORE,
+    i.RESILIENCIA_SCORE,
+    p.ESG_RESILIENCIA_SCORE
+FROM AO_REGIOES r
+JOIN AO_INDICADORES i
+    ON i.REGIAO_ID = r.REGIAO_ID
+JOIN AO_RESULTADOS_POC p
+    ON p.REGIAO_ID = r.REGIAO_ID
+ORDER BY p.ESG_RESILIENCIA_SCORE DESC;
+
+-- 7. Visao consolidada para apresentacao.
+SELECT
+    r.REGIAO,
+    r.CIDADE,
+    r.ESTADO,
+    r.PERIODO_REFERENCIA,
+    i.TEMP_MEDIA_ANUAL_C,
+    i.PRECIP_TOTAL_ANUAL_MM,
+    p.QUALIDADE_AGUA_SCORE,
+    p.ESG_RESILIENCIA_SCORE,
+    p.SCORE_FINAL,
+    p.CLASS_FINAL
+FROM AO_REGIOES r
+JOIN AO_INDICADORES i
+    ON i.REGIAO_ID = r.REGIAO_ID
+JOIN AO_RESULTADOS_POC p
+    ON p.REGIAO_ID = r.REGIAO_ID
+ORDER BY p.SCORE_FINAL DESC;
