@@ -318,25 +318,26 @@ pip install -r requirements.txt
 python menu.py
 ```
 
-| Opção | Função |
-|-------|--------|
-| 1 | NASA POWER (opcional, requer internet) |
-| 2 | Tratar dados climáticos |
-| 3 | Montar `regioes.csv` |
-| 4 | Validar CSV |
-| 5 | Calcular resultados e sensores |
+| Opção | Função (igual ao `python menu.py`) |
+|-------|-------------------------------------|
+| 1 | Extrair dados da NASA POWER (opcional, internet) |
+| 2 | Tratar dados climáticos diários |
+| 3 | Montar CSV oficial (`regioes.csv`) |
+| 4 | Validar CSV oficial |
+| 5 | Calcular resultados e sensores simulados |
 | 6 | Gerar dashboard HTML |
-| 7 | Persistir Oracle ou fallback CSV |
+| 7 | Persistir Oracle / fallback CSV |
 | 8 | Consultar Oracle (opcional) |
-| 9 | Treinar modelo de IA (complementar) |
-| 10 | Gerar PDF de documentação (complementar) |
+| **Complementares** | |
+| 9 | Treinar e salvar modelo de IA |
+| 10 | Gerar PDF de documentação |
 | **Ações em lote** | |
-| P | Pipeline completo (etapas 2 a 7) |
-| N | Pipeline com NASA (etapas 1 a 7) |
-| R | Análise de séries temporais em R (após etapa 2; requer `Rscript`) |
-| T | Treinar modelo de IA (atalho da opção 9) |
-| S | Streamlit (POC HTML ou análise interativa IA) |
-| D | Abrir `dashboard_poc.html` no navegador |
+| P | Pipeline etapas 2 a 7 em sequência |
+| N | Pipeline etapas 1 a 7 (com NASA) |
+| R | Análise R (após etapa 2; requer `Rscript`) |
+| T | Treinar IA (atalho da opção 9) |
+| D | Abrir `dashboard_poc.html` (requer etapa 6) |
+| S | Streamlit: POC HTML + análise IA (requer etapa 5) |
 | 0 | Sair |
 
 **Ordem sugerida para demonstração e vídeo:** `P` → `R` → `9` (ou `T`) → `S` → `10`.
@@ -378,11 +379,11 @@ src/output/dashboard_poc.html
 
 Gera `src/output/acqua_orbit_dc_documentacao.pdf` com a mesma abertura do README e corpo resumido:
 
-1. Capa — logo FIAP, grupo, repositório, link do vídeo, concorrência ao pódio, integrantes, professores
+1. Capa — integrantes, **QUERO CONCORRER** (pódio), professores, repositório e vídeo
 2. Introdução — descrição, objetivo e tema espacial
 3. Desenvolvimento — tecnologias, pipeline, menu (`P`, `R`, `9`, `S`) e entregas
-4. Resultados — ranking, tabela da execução, capturas visuais, análise R (se gerada) e IA
-5. Conclusões — origem dos dados, integração disciplinar, ética, segurança, sensores, formação social
+4. Resultados Esperados — ranking, capturas, análise R e IA
+5. Conclusões — origem dos dados, disciplinas, ética, segurança, sensores, formação social
 6. Anexo — trechos de código em texto
 7. Links para entrega
 

@@ -19,7 +19,6 @@ from __future__ import annotations
 import json
 import re
 import sys
-from datetime import datetime
 from pathlib import Path
 
 _SRC = Path(__file__).resolve().parent
@@ -41,13 +40,35 @@ ARQUIVO_R_RESUMO = OUTPUT / "r_resumo_series_temporais.json"
 DIR_R_GRAFICOS = OUTPUT / "r_graficos"
 LOGO_FIAP = ASSETS / "logo-fiap.png"
 
-MENU_LOTE = [
-    ("P", "Pipeline completo (etapas 2 a 7)"),
-    ("N", "Pipeline com NASA (etapas 1 a 7)"),
-    ("R", "Análise de séries temporais em R (após etapa 2)"),
-    ("T", "Treinar modelo de IA"),
-    ("S", "Dashboard Streamlit interativo"),
-    ("D", "Abrir dashboard HTML no navegador"),
+# Espelha src/menu.py (exib_menu + processar_opcao)
+ETAPAS_MENU = [
+    ("1", "Extrair dados climaticos da NASA POWER", "opcional, requer internet"),
+    ("2", "Tratar dados climaticos diarios", ""),
+    ("3", "Montar CSV oficial da POC (regioes.csv)", ""),
+    ("4", "Validar CSV oficial", ""),
+    ("5", "Calcular resultados finais e sensores simulados", ""),
+    ("6", "Gerar dashboard HTML", ""),
+    ("7", "Persistir no Oracle / fallback CSV", ""),
+    ("8", "Consultar resultados no Oracle", "opcional"),
+]
+
+MENU_COMPLEMENTARES = [
+    ("9", "Treinar e salvar modelo de IA (dashboard Streamlit)", "src/ml/treinar_modelo.py"),
+    ("10", "Gerar PDF da documentacao do projeto", "src/pipeline/09_gerar_pdf_documentacao.py"),
+]
+
+MENU_ACOES_LOTE = [
+    ("P", "Executar pipeline completo", "etapas 2 a 7 em sequencia"),
+    ("N", "Executar pipeline com NASA", "etapas 1 a 7 em sequencia"),
+    ("R", "Analise de series temporais em R", "apos etapa 2; requer Rscript no PATH"),
+    ("T", "Treinar e salvar modelo de IA", "atalho da opcao 9"),
+    ("D", "Abrir dashboard HTML no navegador", "abre src/output/dashboard_poc.html; requer etapa 6"),
+    (
+        "S",
+        "Iniciar dashboard Streamlit interativo",
+        "duas visoes no app: POC HTML (etapa 6) e analise IA; requer etapa 5",
+    ),
+    ("0", "Sair", "encerra o menu"),
 ]
 
 DISCIPLINAS_RESUMO = [
@@ -73,16 +94,14 @@ TUTOR = "Nicolly Candida Rodrigues de Souza"
 COORDENADOR = "André Godoi Chiovato"
 
 PIPELINE_RESUMO = [
-    ("1 (opcional)", "NASA POWER", "Baixa clima real por coordenadas"),
+    ("1", "NASA POWER", "Baixa clima real por coordenadas (opcional)"),
     ("2", "Tratamento", "Prepara série climática diária"),
-    ("3", "Regiões", "Monta base oficial das 3 regiões"),
+    ("3", "Regiões", "Monta regioes.csv"),
     ("4", "Validação", "Confere estrutura do CSV"),
-    ("5", "Resultados", "Calcula scores, sensores e classificação"),
+    ("5", "Resultados", "Scores, sensores simulados e classificação"),
     ("6", "Dashboard HTML", "Gera dashboard_poc.html"),
     ("7", "Persistência", "Oracle ou fallback CSV"),
-    ("8 (opcional)", "Consulta Oracle", "Exibe ranking no terminal"),
-    ("9", "Modelo IA", "Treina RandomForest"),
-    ("10", "PDF", "Gera este documento"),
+    ("8", "Consulta Oracle", "Ranking no terminal (opcional)"),
 ]
 
 RANKING_POC = [
@@ -210,7 +229,13 @@ class DocumentacaoPDF(FPDF):
     def largura_util(self) -> float:
         return self.w - self.l_margin - self.r_margin
 
+    def garantir_espaco(self, altura_mm: float = 28) -> None:
+        if self.get_y() > self.h - altura_mm:
+            self.add_page()
+            self.set_text_color(30, 30, 30)
+
     def subtitulo(self, texto: str) -> None:
+        self.garantir_espaco(28)
         self.ln(3)
         self.set_font(FAMILIA_FONTE, "B", 12)
         self.set_text_color(15, 90, 110)
@@ -275,10 +300,28 @@ class DocumentacaoPDF(FPDF):
         self.set_font(FAMILIA_FONTE, "B", 12)
         self.set_text_color(50, 50, 50)
         self.cell(0, 7, "Grupo 13", new_x="LMARGIN", new_y="NEXT", align="C")
+        self.ln(4)
+
+        self.subtitulo("Integrantes")
+        for nome in INTEGRANTES:
+            self.item_lista(nome)
+
+        if self.concorrer_podio:
+            self.ln(3)
+            self.set_font(FAMILIA_FONTE, "B", 14)
+            self.set_text_color(15, 90, 110)
+            self.cell(0, 9, "QUERO CONCORRER", new_x="LMARGIN", new_y="NEXT", align="C")
+            self.set_text_color(50, 50, 50)
+            self.ln(2)
+
+        self.subtitulo("Professores")
+        self.item_lista(f"Tutor(a): {TUTOR}")
+        self.item_lista(f"Coordenador(a): {COORDENADOR}")
+
         self.ln(3)
         self.set_font(FAMILIA_FONTE, "", 10)
         self.cell(0, 6, f"Repositório: {LINK_REPOSITORIO}", new_x="LMARGIN", new_y="NEXT", align="C")
-        self.ln(5)
+        self.ln(4)
 
         self.subtitulo("Vídeo demonstrativo (Global Solution)")
         self.ln(1)
@@ -287,26 +330,6 @@ class DocumentacaoPDF(FPDF):
         podio = "Sim" if self.concorrer_podio else "Não"
         self.linha_tabela(["Link do vídeo", link])
         self.linha_tabela(["Concorrência ao pódio", podio])
-        self.ln(4)
-
-        self.subtitulo("Integrantes")
-        for nome in INTEGRANTES:
-            self.item_lista(nome)
-
-        self.subtitulo("Professores")
-        self.item_lista(f"Tutor(a): {TUTOR}")
-        self.item_lista(f"Coordenador(a): {COORDENADOR}")
-
-        self.ln(4)
-        self.set_font(FAMILIA_FONTE, "I", 9)
-        self.cell(
-            0,
-            5,
-            f"Documento gerado em {datetime.now().strftime('%d/%m/%Y %H:%M')}",
-            new_x="LMARGIN",
-            new_y="NEXT",
-            align="C",
-        )
 
     def secao_introducao(self) -> None:
         self.nova_secao("1. Introdução")
@@ -334,6 +357,14 @@ class DocumentacaoPDF(FPDF):
             "para apoiar decisão em data centers sustentáveis."
         )
 
+        self.subtitulo("Resposta ao desafio da GS 2026.1")
+        self.paragrafo(
+            "Pergunta central: como a tecnologia espacial melhora processos e decisões na Terra? "
+            "O Acqua Orbit DC utiliza dados de satélites (NASA POWER) para monitoramento climático "
+            "e apoio à escolha de regiões para data centers sustentáveis — infraestrutura crítica "
+            "que depende de água, energia, conectividade e resiliência ambiental."
+        )
+
         self.subtitulo("Conexão com o tema espacial")
         self.paragrafo(
             "A NASA POWER fornece dados climáticos derivados de observações espaciais. "
@@ -350,34 +381,62 @@ class DocumentacaoPDF(FPDF):
             "Streamlit, FPDF2, CSV, HTML, NASA POWER e Oracle (oracledb, opcional)."
         )
 
-        self.subtitulo("Pipeline resumido")
-        self.linha_tabela(["Etapa", "Nome", "O que faz"], negrito=True)
-        for etapa, nome, descricao in PIPELINE_RESUMO:
-            self.linha_tabela([etapa, nome, descricao])
-        self.linha_tabela(["R (lote)", "Séries temporais", "scripts/r/analise_serie_climatica.R"])
+        self.subtitulo("Arquitetura da solução")
+        self.paragrafo(
+            "Fluxo: etapas 1-8 do menu (NASA POWER → tratamento → regioes.csv → validação → "
+            "resultados/sensores → dashboard HTML → Oracle/CSV → consulta Oracle). "
+            "Complementos: opção R (séries temporais após etapa 2), opções 9/T (IA), S (Streamlit), "
+            "10 (PDF)."
+        )
+        self.paragrafo(
+            "Sensores de água simulados em Python; evolução ESP32/MQTT em hardware/esp32/README.md."
+        )
 
-        self.subtitulo("Menu principal (python menu.py)")
-        self.linha_tabela(["Opção", "Ação"], negrito=True)
-        for tecla, descricao in MENU_LOTE:
-            self.linha_tabela([tecla, descricao])
-        self.item_lista("Complementares: [9] treinar IA, [10] gerar este PDF")
+        self.subtitulo("Decisões do grupo")
+        self.item_lista("Três regiões oficiais (Barueri, Rio, Curitiba) para comparação territorial.")
+        self.item_lista("Classificação oficial por regras ESG; IA como ranking comparativo.")
+        self.item_lista("Menu unificado (python menu.py) como ponto único de execução da POC.")
+        self.item_lista("Fallback CSV quando Oracle não está disponível.")
 
         self.subtitulo("Como executar")
         self.paragrafo("Instalação: pip install -r requirements.txt")
-        self.paragrafo("Menu principal: python menu.py")
+        self.paragrafo("Entrada: python menu.py (atalho na raiz do repositório).")
         self.paragrafo(
-            "Ordem sugerida: P (pipeline 2-7) -> R (series temporais) -> 9 ou T (IA) -> S (Streamlit) -> 10 (PDF)."
+            "Ordem sugerida: P → R → 9 ou T → S → 10. A opção N inclui a etapa 1 (NASA POWER)."
         )
-        self.ln(1)
-        self.paragrafo("Principais entregas geradas:", estilo="B")
-        self.item_lista("src/data/resultados_regioes.csv")
-        self.item_lista("src/output/dashboard_poc.html")
+
+        self.subtitulo("Menu principal — etapas do pipeline [1] a [8]")
+        self.linha_tabela(["Opção", "Ação no menu", "Obs."], negrito=True)
+        for opcao, acao, obs in ETAPAS_MENU:
+            self.linha_tabela([opcao, acao, obs or "-"])
+
+        self.subtitulo("Menu — ações complementares")
+        self.linha_tabela(["Opção", "Ação no menu", "Script"], negrito=True)
+        for opcao, acao, script in MENU_COMPLEMENTARES:
+            self.linha_tabela([opcao, acao, script])
+
+        self.subtitulo("Menu — ações em lote")
+        self.linha_tabela(["Opção", "Ação no menu", "Comportamento"], negrito=True)
+        for opcao, acao, comportamento in MENU_ACOES_LOTE:
+            self.linha_tabela([opcao, acao, comportamento])
+
+        self.subtitulo("Resumo das etapas (scripts)")
+        self.linha_tabela(["Etapa", "Módulo", "Saída principal"], negrito=True)
+        for etapa, nome, descricao in PIPELINE_RESUMO:
+            self.linha_tabela([etapa, nome, descricao])
+        self.linha_tabela(["R", "scripts/r/analise_serie_climatica.R", "r_relatorio + r_graficos/"])
+        self.linha_tabela(["9", "src/ml/treinar_modelo.py", "score_regiao_model.joblib"])
+        self.linha_tabela(["10", "09_gerar_pdf_documentacao.py", "acqua_orbit_dc_documentacao.pdf"])
+
+        self.subtitulo("Principais entregas")
+        self.item_lista("src/data/resultados_regioes.csv (etapa 5)")
+        self.item_lista("src/output/dashboard_poc.html (etapa 6)")
         self.item_lista("src/output/r_relatorio_series_temporais.md (opção R)")
-        self.item_lista("src/frontend/dashboard_streamlit.py (visões POC e análise interativa IA)")
-        self.item_lista("src/models/score_regiao_model.joblib (após etapa 9)")
+        self.item_lista("src/models/score_regiao_model.joblib (opção 9 ou T)")
+        self.item_lista("src/output/acqua_orbit_dc_documentacao.pdf (opção 10)")
 
     def secao_resultados(self, capturas: list[tuple[str, Path]]) -> None:
-        self.nova_secao("3. Resultados")
+        self.nova_secao("3. Resultados Esperados")
 
         self.subtitulo("Ranking da POC")
         self.linha_tabela(["#", "Região", "Score", "Classificação"], negrito=True)
@@ -573,9 +632,16 @@ class DocumentacaoPDF(FPDF):
         podio = "Sim" if self.concorrer_podio else "Não"
         self.item_lista(f"Link do vídeo: {link}")
         self.item_lista(f"Concorrência ao pódio: {podio}")
+        if self.concorrer_podio:
+            self.item_lista('Frase no documento e no video: "QUERO CONCORRER"')
         self.paragrafo(
             "Arquivo para upload na plataforma FIAP: src/output/acqua_orbit_dc_documentacao.pdf"
         )
+        if not self.link_video:
+            self.paragrafo(
+                "Pendência: preencher LINK_VIDEO_YOUTUBE em config/entrega_gs.py e regerar o PDF "
+                "após publicar o vídeo como não listado no YouTube."
+            )
 
     def _renderizar_codigo(self, linhas: list[str]) -> None:
         self.set_fill_color(245, 245, 245)
