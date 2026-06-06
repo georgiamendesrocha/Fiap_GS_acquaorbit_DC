@@ -1,5 +1,8 @@
 """
 Carrega variaveis de ambiente a partir de arquivos .env do projeto.
+
+Seguranca (Cognitive Cybersecurity): credenciais Oracle ficam apenas no .env,
+listado no .gitignore — nunca commitar senhas ou tokens no repositorio.
 """
 
 from __future__ import annotations

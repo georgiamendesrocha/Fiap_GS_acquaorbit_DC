@@ -7,6 +7,8 @@ Uso:
 
 from __future__ import annotations
 
+import os
+import shutil
 import subprocess
 import sys
 from dataclasses import dataclass
@@ -52,6 +54,8 @@ ETAPAS: list[Etapa] = [
 
 SCRIPT_TREINAR_MODELO = ML_DIR / "treinar_modelo.py"
 SCRIPT_GERAR_PDF = PIPELINE_DIR / "09_gerar_pdf_documentacao.py"
+SCRIPT_ANALISE_R = ROOT / "scripts" / "r" / "analise_serie_climatica.R"
+ARQUIVO_CLIMA_DIARIO = DATA / "nasa_power_2025_diario_tratado.csv"
 
 
 def limpar_tela() -> None:
@@ -82,6 +86,10 @@ def exibir_menu() -> None:
     status_treino = "OK" if SCRIPT_TREINAR_MODELO.exists() else "AUSENTE"
     status_pdf = "OK" if SCRIPT_GERAR_PDF.exists() else "AUSENTE"
 
+    status_r = "OK" if SCRIPT_ANALISE_R.exists() else "AUSENTE"
+    rscript = shutil.which("Rscript")
+    status_rscript = "OK" if rscript else "Rscript nao encontrado"
+
     print("\nAcoes complementares (fora do pipeline):\n")
     print(f"  [9] Treinar e salvar modelo de IA (dashboard Streamlit) [{status_treino}]")
     print(f" [10] Gerar PDF da documentacao do projeto [{status_pdf}]")
@@ -89,6 +97,7 @@ def exibir_menu() -> None:
     print("\nAcoes em lote:\n")
     print("  [P] Executar pipeline completo (etapas 2 a 7)")
     print("  [N] Executar pipeline completo com NASA (etapas 1 a 7)")
+    print(f"  [R] Analise de series temporais em R (apos etapa 2) [{status_r}, {status_rscript}]")
     print("  [T] Treinar e salvar modelo de IA")
     print("  [D] Abrir dashboard HTML no navegador (se existir)")
     print("  [S] Iniciar dashboard Streamlit interativo")
@@ -130,11 +139,54 @@ def executar_pipeline(incluir_nasa: bool = False) -> None:
     print("Pipeline completo finalizado.")
     print(f"Dashboard: {OUTPUT / 'dashboard_poc.html'}")
     print(f"Resultados: {DATA / 'resultados_regioes.csv'}")
-    print("Proximo passo sugerido: opcao 9 ou T (treinar modelo IA) e opcao S (Streamlit)\n")
+    print(
+        "Proximo passo sugerido: R (series temporais), 9 ou T (modelo IA) e S (Streamlit)\n"
+    )
 
 
 def treinar_modelo_ia() -> None:
     executar_script(SCRIPT_TREINAR_MODELO)
+
+
+def executar_analise_r() -> bool:
+    if not SCRIPT_ANALISE_R.exists():
+        print(f"\nErro: script R nao encontrado: {SCRIPT_ANALISE_R}\n")
+        return False
+
+    rscript = shutil.which("Rscript")
+    if not rscript:
+        print("\nErro: Rscript nao encontrado no PATH.")
+        print("Instale R (https://cran.r-project.org/) e tente novamente.\n")
+        return False
+
+    if not ARQUIVO_CLIMA_DIARIO.exists():
+        print("\nArquivo climatico ainda nao gerado.")
+        print(f"Execute a etapa 2 antes: {ARQUIVO_CLIMA_DIARIO.name}\n")
+        return False
+
+    print(f"\n>> Executando: {SCRIPT_ANALISE_R.relative_to(ROOT)}")
+    print("-" * 62)
+
+    ambiente = os.environ.copy()
+    ambiente["ACQUA_ROOT"] = str(ROOT)
+
+    resultado = subprocess.run(
+        [rscript, str(SCRIPT_ANALISE_R)],
+        cwd=str(ROOT),
+        env=ambiente,
+        check=False,
+    )
+
+    print("-" * 62)
+    if resultado.returncode == 0:
+        print("Analise R concluida com sucesso.")
+        print(f"- {OUTPUT / 'r_relatorio_series_temporais.md'}")
+        print(f"- {OUTPUT / 'r_resumo_series_temporais.json'}")
+        print(f"- Graficos em: {OUTPUT / 'r_graficos'}\n")
+        return True
+
+    print(f"Analise R finalizada com erro (codigo {resultado.returncode}).\n")
+    return False
 
 
 def abrir_dashboard() -> None:
@@ -201,6 +253,9 @@ def processar_opcao(opcao: str) -> bool:
         return True
     if opcao == "10":
         executar_script(SCRIPT_GERAR_PDF)
+        return True
+    if opcao == "R":
+        executar_analise_r()
         return True
     if opcao.isdigit():
         numero = int(opcao)

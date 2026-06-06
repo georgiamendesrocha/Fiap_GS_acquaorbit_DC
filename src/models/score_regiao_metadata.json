@@ -28,6 +28,6 @@
   "mae_teste": 0.11,
   "r2_teste": 0.9315,
   "mae_regioes_reais": 0.0033,
-  "treinado_em": "2026-06-06 13:23:24",
+  "treinado_em": "2026-06-06 14:18:08",
   "observacao": "Modelo introdutorio treinado com ampliacao sintetica a partir das 3 regioes oficiais da POC para viabilizar aprendizado supervisionado."
 }

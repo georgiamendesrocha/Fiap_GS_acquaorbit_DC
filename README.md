@@ -17,7 +17,7 @@ Repositório: https://github.com/georgiamendesrocha/Fiap_GS_acquaorbit_DC
 | Item | Valor |
 |------|--------|
 | Link do vídeo | Aguardando link |
-| Concorrência ao pódio | Não |
+| Concorrência ao pódio | Não (`config/entrega_gs.py` → `CONCORRER_PODIO`) |
 
 ## 👨‍🎓 Integrantes
 
@@ -35,13 +35,13 @@ Repositório: https://github.com/georgiamendesrocha/Fiap_GS_acquaorbit_DC
 
 ### Coordenador(a)
 
-- Andre Godoi Chiovato
+- André Godoi Chiovato
 
 ## 📜 Descrição
 
 POC da Global Solution 2026.1 que compara três regiões candidatas a data center (Barueri/SP, Rio de Janeiro/RJ e Curitiba/PR) usando dados climáticos da NASA POWER, indicadores ambientais parametrizados, sensores de água simulados e regras de classificação ESG.
 
-O projeto entrega pipeline executável, CSVs de resultado, dashboards (HTML e Streamlit), modelo de IA (RandomForest), persistência opcional em Oracle e PDF de documentação consolidado.
+O projeto entrega pipeline executável via `python menu.py`, CSVs de resultado, dashboards (HTML e Streamlit), análise de séries temporais em R (opção **R**), modelo de IA (RandomForest), persistência opcional em Oracle, integração com as disciplinas do semestre e PDF de documentação consolidado.
 
 Solução acadêmica. Não substitui laudo técnico, auditoria ESG ou projeto de engenharia.
 
@@ -51,16 +51,18 @@ Avaliar, com base em clima e coordenadas geográficas, qual região apresenta me
 
 ## Tecnologias
 
-Python 3.10+, Pandas, Requests, Scikit-learn, Joblib, Matplotlib, Streamlit, FPDF2, CSV, HTML/SVG, NASA POWER, Oracle (`oracledb`, opcional).
+Python 3.10+, R 4.x (`Rscript`), Pandas, Requests, Scikit-learn, Joblib, Matplotlib, Streamlit, FPDF2, CSV, HTML/SVG, NASA POWER, Oracle (`oracledb`, opcional).
 
 ## 📁 Estrutura de pastas
 
 ```
 .github/              problem-report.md
 assets/               logo-fiap.png
-config/               oracle.example.env
+config/               entrega_gs.py, oracle.example.env
 document/             ai_project_document_fiap.md
 scripts/database/     SQL Oracle (01, 02) e modelagem (03)
+scripts/r/            analise de series temporais em R
+hardware/esp32/       arquitetura de sensores (evolucao embarcada)
 src/
   api/                nasa_power.py
   pipeline/           etapas 02 a 09
@@ -92,6 +94,161 @@ README.md
 | 8 (opcional) | `src/pipeline/08_consultar_resultados_oracle.py` | consulta no terminal |
 | 9 | `src/ml/treinar_modelo.py` | `src/models/score_regiao_model.joblib` |
 | 10 | `src/pipeline/09_gerar_pdf_documentacao.py` | `src/output/acqua_orbit_dc_documentacao.pdf` |
+| R (lote) | `scripts/r/analise_serie_climatica.R` | `src/output/r_relatorio_series_temporais.md`, `r_graficos/` |
+
+## Prints das etapas (terminal)
+
+Cada etapa confirma no terminal o que foi processado e onde os arquivos foram salvos. Exemplos reais de execução com sucesso (caminhos abreviados como `src/...`):
+
+### Etapa 1 — NASA POWER (opcional, requer internet)
+
+```text
+Consultando NASA POWER: Barueri/Tamboré
+Consultando NASA POWER: Rio de Janeiro - Barra/Jacarepaguá/Parque Olímpico
+Consultando NASA POWER: Curitiba
+Arquivos gerados:
+src/data/nasa_power_2025_diario.csv
+src/data/clima_regioes_2025.csv
+```
+
+### Etapa 2 — Tratamento climático
+
+```text
+Acqua Orbit DC - Tratamento dos dados climaticos diarios
+Base carregada: 1095 registros
+Base diaria tratada com cabecalho interpretavel
+Validacao concluida
+Arquivos salvos com sucesso
+
+Saidas:
+- src/data/nasa_power_2025_diario_tratado.csv
+- src/output/relatorio_tratamento_dados_climaticos.md
+```
+
+### Etapa 3 — Montagem do `regioes.csv`
+
+```text
+Acqua Orbit DC - Montagem do regioes.csv
+Resumo climatico preparado: 3 regioes
+Indicadores complementares integrados
+Arquivo regioes.csv gerado com sucesso
+- src/data/regioes.csv
+- src/output/relatorio_montagem_regioes_csv.md
+```
+
+### Etapa 4 — Validação
+
+```text
+Ácqua Orbit DC — Validação do regioes.csv
+Validação aprovada.
+Relatório: src/output/relatorio_validacao_regioes_csv.md
+```
+
+### Etapa 5 — Resultados e sensores
+
+```text
+Acqua Orbit DC - Calculo dos resultados finais da POC
+Base regioes carregada: 3 regioes
+Indicadores finais calculados
+Etapa 05 concluida com sucesso
+- src/data/resultados_regioes.csv
+- src/output/relatorio_resultados_poc.md
+```
+
+Ranking gravado no relatório:
+
+```text
+1. Barueri/Tamboré - score 7.11 - favorável
+2. Curitiba - score 6.81 - atenção
+3. Rio de Janeiro - Barra/Jacarepaguá/Parque Olímpico - score 5.92 - atenção
+```
+
+### Etapa 6 — Dashboard HTML
+
+```text
+Acqua Orbit DC - Geracao de visualizacoes da POC
+Resultados carregados: 3 regioes
+Etapa 06 concluida com sucesso
+- src/output/dashboard_poc.html
+- src/output/relatorio_visualizacoes_poc.md
+```
+
+### Etapa 7 — Persistência Oracle ou CSV
+
+**Com Oracle configurado (`.env`):**
+
+```text
+Acqua Orbit DC - Persistencia Oracle opcional / CSV fallback
+Resultados carregados: 3 regioes
+Credenciais Oracle carregadas de: .env
+Usuario Oracle: RM571375
+Estrutura Oracle ja existente.
+Persistencia concluida em modo: Oracle
+- src/output/relatorio_persistencia_oracle_csv.md
+```
+
+**Sem Oracle (fallback automático):**
+
+```text
+Persistencia concluida em modo: CSV fallback
+- src/output/relatorio_persistencia_oracle_csv.md
+- src/output/fallback_csv/ao_regioes.csv
+- src/output/fallback_csv/ao_indicadores.csv
+- src/output/fallback_csv/ao_resultados_poc.csv
+```
+
+### Etapa 8 — Consulta Oracle (opcional)
+
+```text
+Credenciais Oracle carregadas de: .env
+Usuario Oracle: RM571375
+Estrutura Oracle ja existente.
+Ranking Oracle - Acqua Orbit DC
+--------------------------------
+Barueri / SP | score 7.11 | favorável
+Curitiba / PR | score 6.81 | atenção
+Rio de Janeiro / RJ | score 5.92 | atenção
+```
+
+### Etapa 9 — Modelo de IA
+
+```text
+Acqua Orbit DC - Treinamento do modelo de IA
+------------------------------------------------
+Modelo salvo em: src/models/score_regiao_model.joblib
+Metadados: src/models/score_regiao_metadata.json
+Treinamento concluido com sucesso.
+```
+
+### Análise R — séries temporais (ação em lote `R` no menu)
+
+```text
+>> Executando: scripts\r\analise_serie_climatica.R
+--------------------------------------------------------------
+Analise R concluida.
+- src/output/r_relatorio_series_temporais.md
+- src/output/r_resumo_series_temporais.json
+- Graficos em: src/output/r_graficos
+--------------------------------------------------------------
+Analise R concluida com sucesso.
+```
+
+**Pré-requisito:** etapa 2. Se `Rscript` não estiver no PATH, o menu exibe erro com instrução de instalação.
+
+### Etapa 10 — PDF de documentação
+
+```text
+Acqua Orbit DC - Geracao do PDF de documentacao
+------------------------------------------------
+Capturas geradas: 4 imagens em src/output/pdf_capturas/
+PDF gerado: src/output/acqua_orbit_dc_documentacao.pdf
+Tamanho: 338.6 KB
+Capturas no PDF: 4
+```
+
+> Se `LINK_VIDEO_YOUTUBE` estiver vazio em `config/entrega_gs.py`, aparece também: `Aviso: LINK_VIDEO_YOUTUBE vazio em config/entrega_gs.py`
+
+**Ações em lote no menu:** `P` (pipeline 2–7), `N` (com NASA 1–7), `R` (séries temporais em R, após etapa 2), `T`/`S`/`D` (IA e dashboards). Os prints das etapas aparecem em sequência ao usar `P`.
 
 ## Entregáveis para avaliação
 
@@ -125,6 +282,9 @@ README.md
 | `src/output/acqua_orbit_dc_documentacao.pdf` | PDF consolidado com logo FIAP, entregáveis, capturas e código |
 | `src/output/relatorio_*.md` | Relatório de cada etapa do pipeline |
 | `src/output/pdf_capturas/` | Imagens geradas automaticamente para o PDF |
+| `src/output/r_relatorio_series_temporais.md` | Relatório R — séries temporais e anomalias |
+| `src/output/r_graficos/` | Gráficos PNG gerados pelo script R |
+| `hardware/esp32/README.md` | Arquitetura de sensores embarcados (evolução) |
 
 ### Banco de dados (opcional)
 
@@ -144,7 +304,7 @@ README.md
 
 ## 🔧 Como executar
 
-Requisitos: Python 3.10+, PowerShell. Internet só na etapa 1. Oracle é opcional.
+Requisitos: Python 3.10+, R 4.x com `Rscript` no PATH (opção R), PowerShell. Internet só na etapa 1. Oracle é opcional.
 
 ### Instalação
 
@@ -168,15 +328,18 @@ python menu.py
 | 6 | Gerar dashboard HTML |
 | 7 | Persistir Oracle ou fallback CSV |
 | 8 | Consultar Oracle (opcional) |
-| 9 / T | Treinar modelo de IA |
-| 10 | Gerar PDF de documentação |
+| 9 | Treinar modelo de IA (complementar) |
+| 10 | Gerar PDF de documentação (complementar) |
+| **Ações em lote** | |
 | P | Pipeline completo (etapas 2 a 7) |
 | N | Pipeline com NASA (etapas 1 a 7) |
+| R | Análise de séries temporais em R (após etapa 2; requer `Rscript`) |
+| T | Treinar modelo de IA (atalho da opção 9) |
 | S | Streamlit (POC HTML ou análise interativa IA) |
 | D | Abrir `dashboard_poc.html` no navegador |
 | 0 | Sair |
 
-Ordem sugerida para demonstração: `P` → `9` → `S` → `10`.
+**Ordem sugerida para demonstração e vídeo:** `P` → `R` → `9` (ou `T`) → `S` → `10`.
 
 ### Execução manual
 
@@ -198,6 +361,13 @@ NASA POWER (internet):
 python src\api\nasa_power.py
 ```
 
+Análise R (séries temporais, após etapa 2) — pelo menu: opção **R**, ou manualmente:
+
+```powershell
+$env:ACQUA_ROOT = (Get-Location).Path
+Rscript scripts\r\analise_serie_climatica.R
+```
+
 Dashboard HTML no navegador:
 
 ```text
@@ -210,13 +380,13 @@ Gera `src/output/acqua_orbit_dc_documentacao.pdf` com a mesma abertura do README
 
 1. Capa — logo FIAP, grupo, repositório, link do vídeo, concorrência ao pódio, integrantes, professores
 2. Introdução — descrição, objetivo e tema espacial
-3. Desenvolvimento — tecnologias, pipeline resumido e como executar
-4. Resultados — ranking, tabela da execução, capturas visuais e IA
-5. Conclusões — origem dos dados e limites
+3. Desenvolvimento — tecnologias, pipeline, menu (`P`, `R`, `9`, `S`) e entregas
+4. Resultados — ranking, tabela da execução, capturas visuais, análise R (se gerada) e IA
+5. Conclusões — origem dos dados, integração disciplinar, ética, segurança, sensores, formação social
 6. Anexo — trechos de código em texto
 7. Links para entrega
 
-Pré-requisito: etapa 5. Para capturas do Streamlit IA, rodar etapa 9 antes.
+Pré-requisitos: etapa 5 para o PDF base; etapa 9 para capturas Streamlit IA; opção **R** para gráficos e resumo R no PDF.
 
 ```powershell
 python src\pipeline\09_gerar_pdf_documentacao.py
@@ -224,17 +394,18 @@ python src\pipeline\09_gerar_pdf_documentacao.py
 
 ### Entrega na plataforma FIAP
 
-Checklist final (alem do repositorio Git):
+Checklist final (além do repositório Git):
 
-1. Gravar video de ate 5 min (`menu.py` -> `P` -> `9` -> `S` -> dashboards).
-2. Subir no YouTube como **Nao listado**.
-3. Editar `config/entrega_gs.py`:
-   - `LINK_VIDEO_YOUTUBE` = URL do video
-   - `CONCORRER_PODIO = True` somente se forem ao podio
-4. Regenerar PDF: `python menu.py` -> opcao **10**.
-5. Enviar na plataforma o arquivo `src/output/acqua_orbit_dc_documentacao.pdf`.
+1. Gravar vídeo de até 5 min (`menu.py` → `P` → `R` → `9` → `S` → dashboards).
+2. Rodar análise R antes do PDF: `python menu.py` → opção **R** (ação em lote).
+3. Subir no YouTube como **não listado**.
+4. Editar `config/entrega_gs.py`:
+   - `LINK_VIDEO_YOUTUBE` = URL do vídeo
+   - `CONCORRER_PODIO = True` somente se forem ao pódio
+5. Regenerar PDF: `python menu.py` → opção **10**.
+6. Enviar na plataforma o arquivo `src/output/acqua_orbit_dc_documentacao.pdf`.
 
-**Roteiro sugerido do video (5 min):** grupo + tema -> problema -> `python menu.py` -> pipeline -> dashboard HTML -> Streamlit -> ranking -> disciplinas integradas -> link do repo.
+Roteiro detalhado por disciplina: seção [Integração com as disciplinas do semestre](#integração-com-as-disciplinas-do-semestre).
 
 ### Oracle (opcional)
 
@@ -298,8 +469,106 @@ Rio de Janeiro / RJ | score 5.92 | atenção
 
 POC acadêmica com sensores simulados e indicadores parametrizados. Não cobre licenciamento ambiental, projeto elétrico, telecom ou engenharia de data center.
 
+## Integração com as disciplinas do semestre
+
+O tema oficial da GS é **data center sustentável** (economia espacial → decisão na Terra). A tabela abaixo mostra como cada disciplina aparece no repositório.
+
+| Disciplina | Cobertura | Evidência no projeto |
+|------------|-----------|----------------------|
+| AI Challenges (ética IAG) | Forte na narrativa | Regras transparentes etapa 5; IA comparativa, não decisão final — ver seção abaixo |
+| Python – Scikit-learn e Streamlit | Forte | `src/ml/`, `dashboard_streamlit*.py`, etapas 9 e S |
+| Statistical Computing with R – Séries temporais | Implementado | Opção **R** no menu; `scripts/r/analise_serie_climatica.R` + `src/output/r_*` |
+| Cognitive Data Science – DDL | Forte | `scripts/database/01_criar_tabelas_oracle.sql`, etapas 7 e 8 |
+| Cognitive Cybersecurity | Documentado + prática básica | `.env` no `.gitignore`, `carregar_env.py` — ver seção abaixo |
+| AI Computer Systems & Sensors | Parcial (simulado + arquitetura) | `simular_sensores_agua()`, `hardware/esp32/README.md` |
+| Machine Learning & Modelling | Forte | RandomForest, metadata JSON, comparativo IA x regras |
+| Formação Social | Forte na narrativa | ESG, impacto territorial — ver seção abaixo |
+
+### Ética e governança da IA (AI Challenges)
+
+- **Transparência:** a classificação oficial usa regras determinísticas na etapa 5 (`classificar_regiao`), documentadas no relatório e no CSV.
+- **Papel da IA:** o RandomForest (etapa 9) **compara e ranqueia**; não substitui licenciamento, laudo ambiental nem decisão humana.
+- **Viés e limites:** apenas 3 regiões; o treino usa ampliação sintética (`score_regiao_metadata.json`) — o modelo **não generaliza** para outras cidades.
+- **Responsabilidade:** scores parametrizados e sensores simulados; a POC declara limites acadêmicos no README e no PDF.
+
+### Séries temporais em R
+
+Análise da série diária NASA POWER (disciplina **Statistical Computing with R**).
+
+**Pré-requisito:** etapa 2 (`nasa_power_2025_diario_tratado.csv`).
+
+```powershell
+python menu.py
+# opcao R (ou manualmente: Rscript scripts\r\analise_serie_climatica.R)
+```
+
+**Saídas:**
+
+| Arquivo | Conteúdo |
+|---------|----------|
+| `src/output/r_relatorio_series_temporais.md` | Resumo por região e anomalias (z-score \|z\| > 2) |
+| `src/output/r_resumo_series_temporais.json` | Metadados da execução |
+| `src/output/r_graficos/*.png` | Séries de temperatura e precipitação |
+
+A mesma série alimenta a etapa 3, o dashboard HTML e a aba **Clima** do Streamlit.
+
+### Segurança dos dados (Cognitive Cybersecurity)
+
+| Prática | Implementação |
+|---------|----------------|
+| Credenciais fora do Git | `.env` / `.ENV` listados no `.gitignore` |
+| Exemplo sem segredo | `config/oracle.example.env` |
+| Carregamento seguro | `src/config/carregar_env.py` — variáveis só em ambiente local |
+| Dados da POC | Sem dados pessoais; clima público NASA POWER |
+| Evolução futura | TLS em APIs, MQTT com TLS para sensores, roles Oracle |
+
+**Não fazer:** commitar `.env`, senhas em código ou prints com `ORACLE_PASSWORD`.
+
+### Sensores e sistemas embarcados (AI Computer Systems & Sensors)
+
+Hoje as leituras são **simuladas** em Python, com os mesmos campos que um barramento ESP32/MQTT entregaria:
+
+| Campo | Sensor alvo |
+|-------|-------------|
+| `ph_agua` | Sonda pH |
+| `turbidez_ntu` | Turbidímetro |
+| `condutividade_us_cm` | Condutividade |
+| `nivel_reservatorio_pct` | Ultrassom / boia |
+| `temperatura_agua_c` | DS18B20 / NTC |
+
+Arquitetura de evolução: `hardware/esp32/README.md`.
+
+```text
+ESP32 + sensores -> MQTT/Serial -> Python (etapa 5) -> Oracle/CSV -> Streamlit
+```
+
+### Impacto social e formação social
+
+- **Território:** compara Barueri/SP, Rio/RJ e Curitiba/PR — regiões com pressões ambientais e urbanas distintas (Mata Atlântica, calor costeiro, clima mais ameno no Sul).
+- **Água e energia:** data centers consomem água de refrigeração e energia; a POC explicita reuso pluvial, risco hídrico e demanda térmica.
+- **Equidade:** score alto não dispensa **consulta a comunidades, órgãos ambientais e poder público** — tecnologia apoia, não substitui diálogo social.
+- **Sustentabilidade:** critérios ESG na classificação; solução inclusiva no sentido de balancear clima, infraestrutura e resiliência, não só eficiência econômica.
+
+### Roteiro do vídeo (5 min) — por disciplina
+
+| Tempo | Mostrar | Disciplina |
+|-------|---------|------------|
+| 0:00–0:45 | Grupo, tema espacial, problema do data center | Formação social |
+| 0:45–1:30 | `python menu.py` → `P` (prints das etapas) | Python |
+| 1:30–2:00 | Gráfico R ou `r_relatorio_series_temporais.md` | R, séries temporais |
+| 2:00–2:30 | Sensores no CSV + `hardware/esp32/README.md` | Sensores |
+| 2:30–3:00 | SQL Developer / etapa 7 ou 8 | DDL Oracle |
+| 3:00–3:45 | Streamlit + etapa 9 (metadata do modelo) | ML, Streamlit |
+| 3:45–4:15 | Regras etapa 5 vs IA; limites e viés | Ética IAG |
+| 4:15–4:45 | `.env` fora do repo | Cybersecurity |
+| 4:45–5:00 | Ranking + link GitHub | Fechamento GS |
+
 ## 🗃 Histórico de lançamentos
 
+* 1.2.0 - 06/06/2026 — README e PDF revisados (menu, R, disciplinas, ética).
+* 1.1.2 - 06/06/2026 — Opção R movida para ações em lote no menu.
+* 1.1.1 - 06/06/2026 — Análise R integrada ao menu (opção R).
+* 1.1.0 - 06/06/2026 — Integração disciplinar no README, análise R de séries temporais, arquitetura ESP32.
 * 1.0.0 - 06/06/2026 — Menu, Streamlit duplo (POC + IA), PDF com logo FIAP, template FIAP.
 * 0.7.0 - 04/06/2026 — Persistência Oracle e fallback CSV.
 * 0.6.0 - 04/06/2026 — Dashboard HTML.

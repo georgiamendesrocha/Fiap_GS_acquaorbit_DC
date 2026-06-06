@@ -118,6 +118,16 @@ def limitar(valor: float, minimo: float = 0.0, maximo: float = 10.0) -> float:
 
 
 def simular_sensores_agua(linha: pd.Series) -> dict[str, float | str]:
+    """
+    Simula leituras de sensores de agua para a POC (substituivel por ESP32/MQTT).
+
+    Mapeamento para hardware futuro (ver hardware/esp32/README.md):
+    - ph_agua -> sonda pH
+    - turbidez_ntu -> turbidimetro
+    - condutividade_us_cm -> sensor de condutividade
+    - nivel_reservatorio_pct -> ultrassom/boia no reservatorio
+    - temperatura_agua_c -> DS18B20 ou NTC
+    """
     consumo_mensal_m3 = float(linha["consumo_agua_tecnico_m3_dia"]) * 30
     potencial_mensal_m3 = float(linha["potencial_pluvial_m3_ano"]) / 12
     nivel_reservatorio_pct = limitar((potencial_mensal_m3 / consumo_mensal_m3) * 100, 25, 95)

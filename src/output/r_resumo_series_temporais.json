@@ -1,0 +1,633 @@
+{
+  "gerado_em": "2026-06-06 14:53:00",
+  "registros": 1095,
+  "regioes": [
+    "Barueri/Tamboré",
+    "Rio de Janeiro - Barra/Jacarepaguá/Parque Olímpico",
+    "Curitiba"
+  ],
+  "anomalias": {
+    "Barueri/Tamboré": [
+      {
+        "variavel": "temp_media",
+        "indice": 162,
+        "valor": 13.02,
+        "z_score": -2.1,
+        "data": "2025-06-11"
+      },
+      {
+        "variavel": "temp_media",
+        "indice": 163,
+        "valor": 12.02,
+        "z_score": -2.38,
+        "data": "2025-06-12"
+      },
+      {
+        "variavel": "temp_media",
+        "indice": 175,
+        "valor": 12.9,
+        "z_score": -2.13,
+        "data": "2025-06-24"
+      },
+      {
+        "variavel": "temp_media",
+        "indice": 176,
+        "valor": 11.34,
+        "z_score": -2.57,
+        "data": "2025-06-25"
+      },
+      {
+        "variavel": "temp_media",
+        "indice": 183,
+        "valor": 11.11,
+        "z_score": -2.63,
+        "data": "2025-07-02"
+      },
+      {
+        "variavel": "temp_media",
+        "indice": 184,
+        "valor": 12.13,
+        "z_score": -2.35,
+        "data": "2025-07-03"
+      },
+      {
+        "variavel": "temp_media",
+        "indice": 210,
+        "valor": 12.92,
+        "z_score": -2.13,
+        "data": "2025-07-29"
+      },
+      {
+        "variavel": "temp_media",
+        "indice": 211,
+        "valor": 10.89,
+        "z_score": -2.69,
+        "data": "2025-07-30"
+      },
+      {
+        "variavel": "temp_media",
+        "indice": 212,
+        "valor": 13.26,
+        "z_score": -2.03,
+        "data": "2025-07-31"
+      },
+      {
+        "variavel": "temp_media",
+        "indice": 222,
+        "valor": 11.44,
+        "z_score": -2.54,
+        "data": "2025-08-10"
+      },
+      {
+        "variavel": "temp_media",
+        "indice": 223,
+        "valor": 12.41,
+        "z_score": -2.27,
+        "data": "2025-08-11"
+      },
+      {
+        "variavel": "temp_media",
+        "indice": 358,
+        "valor": 27.97,
+        "z_score": 2.07,
+        "data": "2025-12-24"
+      },
+      {
+        "variavel": "temp_media",
+        "indice": 359,
+        "valor": 28.71,
+        "z_score": 2.27,
+        "data": "2025-12-25"
+      },
+      {
+        "variavel": "temp_media",
+        "indice": 360,
+        "valor": 28.24,
+        "z_score": 2.14,
+        "data": "2025-12-26"
+      },
+      {
+        "variavel": "temp_media",
+        "indice": 361,
+        "valor": 28.09,
+        "z_score": 2.1,
+        "data": "2025-12-27"
+      },
+      {
+        "variavel": "temp_media",
+        "indice": 362,
+        "valor": 27.79,
+        "z_score": 2.02,
+        "data": "2025-12-28"
+      },
+      {
+        "variavel": "precipitacao_diaria_mm",
+        "indice": 16,
+        "valor": 16.21,
+        "z_score": 3.4,
+        "data": "2025-01-16"
+      },
+      {
+        "variavel": "precipitacao_diaria_mm",
+        "indice": 26,
+        "valor": 13.49,
+        "z_score": 2.75,
+        "data": "2025-01-26"
+      },
+      {
+        "variavel": "precipitacao_diaria_mm",
+        "indice": 30,
+        "valor": 22.46,
+        "z_score": 4.91,
+        "data": "2025-01-30"
+      },
+      {
+        "variavel": "precipitacao_diaria_mm",
+        "indice": 31,
+        "valor": 20.41,
+        "z_score": 4.41,
+        "data": "2025-01-31"
+      },
+      {
+        "variavel": "precipitacao_diaria_mm",
+        "indice": 33,
+        "valor": 12.63,
+        "z_score": 2.54,
+        "data": "2025-02-02"
+      },
+      {
+        "variavel": "precipitacao_diaria_mm",
+        "indice": 78,
+        "valor": 14.06,
+        "z_score": 2.89,
+        "data": "2025-03-19"
+      },
+      {
+        "variavel": "precipitacao_diaria_mm",
+        "indice": 94,
+        "valor": 11.36,
+        "z_score": 2.24,
+        "data": "2025-04-04"
+      },
+      {
+        "variavel": "precipitacao_diaria_mm",
+        "indice": 265,
+        "valor": 21.99,
+        "z_score": 4.79,
+        "data": "2025-09-22"
+      },
+      {
+        "variavel": "precipitacao_diaria_mm",
+        "indice": 283,
+        "valor": 14.34,
+        "z_score": 2.95,
+        "data": "2025-10-10"
+      },
+      {
+        "variavel": "precipitacao_diaria_mm",
+        "indice": 290,
+        "valor": 17.16,
+        "z_score": 3.63,
+        "data": "2025-10-17"
+      },
+      {
+        "variavel": "precipitacao_diaria_mm",
+        "indice": 301,
+        "valor": 15.07,
+        "z_score": 3.13,
+        "data": "2025-10-28"
+      },
+      {
+        "variavel": "precipitacao_diaria_mm",
+        "indice": 306,
+        "valor": 14.43,
+        "z_score": 2.97,
+        "data": "2025-11-02"
+      },
+      {
+        "variavel": "precipitacao_diaria_mm",
+        "indice": 312,
+        "valor": 18.35,
+        "z_score": 3.92,
+        "data": "2025-11-08"
+      },
+      {
+        "variavel": "precipitacao_diaria_mm",
+        "indice": 343,
+        "valor": 17.54,
+        "z_score": 3.72,
+        "data": "2025-12-09"
+      },
+      {
+        "variavel": "precipitacao_diaria_mm",
+        "indice": 347,
+        "valor": 37.88,
+        "z_score": 8.62,
+        "data": "2025-12-13"
+      },
+      {
+        "variavel": "precipitacao_diaria_mm",
+        "indice": 362,
+        "valor": 11.32,
+        "z_score": 2.23,
+        "data": "2025-12-28"
+      }
+    ],
+    "Rio de Janeiro - Barra/Jacarepaguá/Parque Olímpico": [
+      {
+        "variavel": "temp_media",
+        "indice": 176,
+        "valor": 18.19,
+        "z_score": -2.02,
+        "data": "2025-06-25"
+      },
+      {
+        "variavel": "temp_media",
+        "indice": 211,
+        "valor": 18.12,
+        "z_score": -2.05,
+        "data": "2025-07-30"
+      },
+      {
+        "variavel": "temp_media",
+        "indice": 224,
+        "valor": 18.2,
+        "z_score": -2.02,
+        "data": "2025-08-12"
+      },
+      {
+        "variavel": "temp_media",
+        "indice": 365,
+        "valor": 28.21,
+        "z_score": 2.01,
+        "data": "2025-12-31"
+      },
+      {
+        "variavel": "precipitacao_diaria_mm",
+        "indice": 1,
+        "valor": 31.47,
+        "z_score": 4.25,
+        "data": "2025-01-01"
+      },
+      {
+        "variavel": "precipitacao_diaria_mm",
+        "indice": 6,
+        "valor": 18.68,
+        "z_score": 2.36,
+        "data": "2025-01-06"
+      },
+      {
+        "variavel": "precipitacao_diaria_mm",
+        "indice": 7,
+        "valor": 20.56,
+        "z_score": 2.64,
+        "data": "2025-01-07"
+      },
+      {
+        "variavel": "precipitacao_diaria_mm",
+        "indice": 27,
+        "valor": 34.05,
+        "z_score": 4.64,
+        "data": "2025-01-27"
+      },
+      {
+        "variavel": "precipitacao_diaria_mm",
+        "indice": 28,
+        "valor": 18.89,
+        "z_score": 2.39,
+        "data": "2025-01-28"
+      },
+      {
+        "variavel": "precipitacao_diaria_mm",
+        "indice": 29,
+        "valor": 19.36,
+        "z_score": 2.46,
+        "data": "2025-01-29"
+      },
+      {
+        "variavel": "precipitacao_diaria_mm",
+        "indice": 30,
+        "valor": 32.14,
+        "z_score": 4.35,
+        "data": "2025-01-30"
+      },
+      {
+        "variavel": "precipitacao_diaria_mm",
+        "indice": 78,
+        "valor": 27.06,
+        "z_score": 3.6,
+        "data": "2025-03-19"
+      },
+      {
+        "variavel": "precipitacao_diaria_mm",
+        "indice": 83,
+        "valor": 64.16,
+        "z_score": 9.1,
+        "data": "2025-03-24"
+      },
+      {
+        "variavel": "precipitacao_diaria_mm",
+        "indice": 95,
+        "valor": 53.58,
+        "z_score": 7.53,
+        "data": "2025-04-05"
+      },
+      {
+        "variavel": "precipitacao_diaria_mm",
+        "indice": 118,
+        "valor": 17.28,
+        "z_score": 2.15,
+        "data": "2025-04-28"
+      },
+      {
+        "variavel": "precipitacao_diaria_mm",
+        "indice": 265,
+        "valor": 20.25,
+        "z_score": 2.59,
+        "data": "2025-09-22"
+      },
+      {
+        "variavel": "precipitacao_diaria_mm",
+        "indice": 291,
+        "valor": 30.62,
+        "z_score": 4.13,
+        "data": "2025-10-18"
+      },
+      {
+        "variavel": "precipitacao_diaria_mm",
+        "indice": 292,
+        "valor": 19.38,
+        "z_score": 2.46,
+        "data": "2025-10-19"
+      },
+      {
+        "variavel": "precipitacao_diaria_mm",
+        "indice": 328,
+        "valor": 16.47,
+        "z_score": 2.03,
+        "data": "2025-11-24"
+      },
+      {
+        "variavel": "precipitacao_diaria_mm",
+        "indice": 351,
+        "valor": 31.3,
+        "z_score": 4.23,
+        "data": "2025-12-17"
+      }
+    ],
+    "Curitiba": [
+      {
+        "variavel": "temp_media",
+        "indice": 149,
+        "valor": 9.4,
+        "z_score": -2.01,
+        "data": "2025-05-29"
+      },
+      {
+        "variavel": "temp_media",
+        "indice": 163,
+        "valor": 9.38,
+        "z_score": -2.01,
+        "data": "2025-06-12"
+      },
+      {
+        "variavel": "temp_media",
+        "indice": 175,
+        "valor": 5,
+        "z_score": -3.02,
+        "data": "2025-06-24"
+      },
+      {
+        "variavel": "temp_media",
+        "indice": 176,
+        "valor": 6.74,
+        "z_score": -2.62,
+        "data": "2025-06-25"
+      },
+      {
+        "variavel": "temp_media",
+        "indice": 182,
+        "valor": 8.69,
+        "z_score": -2.17,
+        "data": "2025-07-01"
+      },
+      {
+        "variavel": "temp_media",
+        "indice": 183,
+        "valor": 6.49,
+        "z_score": -2.68,
+        "data": "2025-07-02"
+      },
+      {
+        "variavel": "temp_media",
+        "indice": 184,
+        "valor": 7.06,
+        "z_score": -2.55,
+        "data": "2025-07-03"
+      },
+      {
+        "variavel": "temp_media",
+        "indice": 210,
+        "valor": 9.1,
+        "z_score": -2.08,
+        "data": "2025-07-29"
+      },
+      {
+        "variavel": "temp_media",
+        "indice": 211,
+        "valor": 8.15,
+        "z_score": -2.3,
+        "data": "2025-07-30"
+      },
+      {
+        "variavel": "temp_media",
+        "indice": 212,
+        "valor": 9.19,
+        "z_score": -2.06,
+        "data": "2025-07-31"
+      },
+      {
+        "variavel": "temp_media",
+        "indice": 221,
+        "valor": 8.34,
+        "z_score": -2.25,
+        "data": "2025-08-09"
+      },
+      {
+        "variavel": "temp_media",
+        "indice": 222,
+        "valor": 9.39,
+        "z_score": -2.01,
+        "data": "2025-08-10"
+      },
+      {
+        "variavel": "temp_media",
+        "indice": 357,
+        "valor": 27.09,
+        "z_score": 2.06,
+        "data": "2025-12-23"
+      },
+      {
+        "variavel": "temp_media",
+        "indice": 358,
+        "valor": 27.36,
+        "z_score": 2.12,
+        "data": "2025-12-24"
+      },
+      {
+        "variavel": "temp_media",
+        "indice": 359,
+        "valor": 27.67,
+        "z_score": 2.19,
+        "data": "2025-12-25"
+      },
+      {
+        "variavel": "temp_media",
+        "indice": 361,
+        "valor": 27.51,
+        "z_score": 2.16,
+        "data": "2025-12-27"
+      },
+      {
+        "variavel": "temp_media",
+        "indice": 362,
+        "valor": 27.52,
+        "z_score": 2.16,
+        "data": "2025-12-28"
+      },
+      {
+        "variavel": "precipitacao_diaria_mm",
+        "indice": 17,
+        "valor": 14.75,
+        "z_score": 2.52,
+        "data": "2025-01-17"
+      },
+      {
+        "variavel": "precipitacao_diaria_mm",
+        "indice": 19,
+        "valor": 12.36,
+        "z_score": 2,
+        "data": "2025-01-19"
+      },
+      {
+        "variavel": "precipitacao_diaria_mm",
+        "indice": 22,
+        "valor": 14.76,
+        "z_score": 2.52,
+        "data": "2025-01-22"
+      },
+      {
+        "variavel": "precipitacao_diaria_mm",
+        "indice": 32,
+        "valor": 17,
+        "z_score": 3,
+        "data": "2025-02-01"
+      },
+      {
+        "variavel": "precipitacao_diaria_mm",
+        "indice": 38,
+        "valor": 20.78,
+        "z_score": 3.82,
+        "data": "2025-02-07"
+      },
+      {
+        "variavel": "precipitacao_diaria_mm",
+        "indice": 58,
+        "valor": 18.13,
+        "z_score": 3.25,
+        "data": "2025-02-27"
+      },
+      {
+        "variavel": "precipitacao_diaria_mm",
+        "indice": 142,
+        "valor": 15.36,
+        "z_score": 2.65,
+        "data": "2025-05-22"
+      },
+      {
+        "variavel": "precipitacao_diaria_mm",
+        "indice": 156,
+        "valor": 26.89,
+        "z_score": 5.14,
+        "data": "2025-06-05"
+      },
+      {
+        "variavel": "precipitacao_diaria_mm",
+        "indice": 238,
+        "valor": 23.98,
+        "z_score": 4.51,
+        "data": "2025-08-26"
+      },
+      {
+        "variavel": "precipitacao_diaria_mm",
+        "indice": 264,
+        "valor": 18.23,
+        "z_score": 3.27,
+        "data": "2025-09-21"
+      },
+      {
+        "variavel": "precipitacao_diaria_mm",
+        "indice": 265,
+        "valor": 19.84,
+        "z_score": 3.62,
+        "data": "2025-09-22"
+      },
+      {
+        "variavel": "precipitacao_diaria_mm",
+        "indice": 281,
+        "valor": 28.15,
+        "z_score": 5.42,
+        "data": "2025-10-08"
+      },
+      {
+        "variavel": "precipitacao_diaria_mm",
+        "indice": 282,
+        "valor": 16.96,
+        "z_score": 3,
+        "data": "2025-10-09"
+      },
+      {
+        "variavel": "precipitacao_diaria_mm",
+        "indice": 291,
+        "valor": 13.38,
+        "z_score": 2.22,
+        "data": "2025-10-18"
+      },
+      {
+        "variavel": "precipitacao_diaria_mm",
+        "indice": 301,
+        "valor": 17.67,
+        "z_score": 3.15,
+        "data": "2025-10-28"
+      },
+      {
+        "variavel": "precipitacao_diaria_mm",
+        "indice": 312,
+        "valor": 16.49,
+        "z_score": 2.89,
+        "data": "2025-11-08"
+      },
+      {
+        "variavel": "precipitacao_diaria_mm",
+        "indice": 322,
+        "valor": 13.97,
+        "z_score": 2.35,
+        "data": "2025-11-18"
+      },
+      {
+        "variavel": "precipitacao_diaria_mm",
+        "indice": 328,
+        "valor": 13.07,
+        "z_score": 2.15,
+        "data": "2025-11-24"
+      },
+      {
+        "variavel": "precipitacao_diaria_mm",
+        "indice": 365,
+        "valor": 15.76,
+        "z_score": 2.74,
+        "data": "2025-12-31"
+      }
+    ]
+  }
+}

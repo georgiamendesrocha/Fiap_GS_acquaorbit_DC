@@ -5,9 +5,9 @@ Gera PDF de entrega da Global Solution.
 Estrutura alinhada ao README (inicio igual, corpo resumido):
   1. Capa — logo FIAP, grupo, repo, video, integrantes, professores
   2. Introducao — descricao e objetivo
-  3. Desenvolvimento — tecnologias, pipeline e execucao
-  4. Resultados — ranking, evidencias visuais, modelo IA
-  5. Conclusao — origem dos dados e limites
+  3. Desenvolvimento — tecnologias, pipeline, menu (P, R, 9, S)
+  4. Resultados — ranking, capturas, analise R, modelo IA
+  5. Conclusoes — dados, disciplinas, etica, seguranca, sensores, social
   6. Anexo — trechos de codigo em texto
   7. Links para entrega
 
@@ -37,7 +37,29 @@ ARQUIVO_PDF = OUTPUT / "acqua_orbit_dc_documentacao.pdf"
 ARQUIVO_RESULTADOS = DATA / "resultados_regioes.csv"
 ARQUIVO_MODELO_META = MODELS / "score_regiao_model.joblib"
 ARQUIVO_MODELO_META_JSON = MODELS / "score_regiao_metadata.json"
+ARQUIVO_R_RESUMO = OUTPUT / "r_resumo_series_temporais.json"
+DIR_R_GRAFICOS = OUTPUT / "r_graficos"
 LOGO_FIAP = ASSETS / "logo-fiap.png"
+
+MENU_LOTE = [
+    ("P", "Pipeline completo (etapas 2 a 7)"),
+    ("N", "Pipeline com NASA (etapas 1 a 7)"),
+    ("R", "Análise de séries temporais em R (após etapa 2)"),
+    ("T", "Treinar modelo de IA"),
+    ("S", "Dashboard Streamlit interativo"),
+    ("D", "Abrir dashboard HTML no navegador"),
+]
+
+DISCIPLINAS_RESUMO = [
+    ("AI Challenges (ética IAG)", "Regras etapa 5; IA comparativa, não decisão final"),
+    ("Python + sklearn + Streamlit", "Pipeline, menu, etapas 9 e S"),
+    ("R - Séries temporais", "Opção R; z-score e gráficos em src/output/r_graficos"),
+    ("DDL Oracle", "scripts/database/01_*.sql; etapas 7 e 8"),
+    ("Cybersecurity", ".env fora do Git; carregar_env.py"),
+    ("Sensores / ESP32", "simular_sensores_agua(); hardware/esp32/README.md"),
+    ("ML & Modelling", "RandomForest, metadata JSON, comparativo IA x regras"),
+    ("Formação social", "ESG, impacto territorial Barueri, Rio e Curitiba"),
+]
 
 INTEGRANTES = [
     "Edemir Sufiatti - RM571375",
@@ -114,6 +136,30 @@ def resolver_fontes() -> dict[str, Path]:
         "Nenhuma fonte Unicode encontrada. Esperado DejaVu em assets/fonts "
         "ou fontes Arial/Segoe UI no Windows."
     )
+
+
+def resolver_grafico_r() -> Path | None:
+    if not DIR_R_GRAFICOS.exists():
+        return None
+    preferidos = list(DIR_R_GRAFICOS.glob("serie_temp_*.png"))
+    if preferidos:
+        return sorted(preferidos)[0]
+    demais = list(DIR_R_GRAFICOS.glob("*.png"))
+    return sorted(demais)[0] if demais else None
+
+
+def contar_anomalias_r() -> int | None:
+    if not ARQUIVO_R_RESUMO.exists():
+        return None
+    try:
+        dados = json.loads(ARQUIVO_R_RESUMO.read_text(encoding="utf-8"))
+        total = 0
+        for regiao, eventos in (dados.get("anomalias") or {}).items():
+            if isinstance(eventos, list):
+                total += len(eventos)
+        return total
+    except Exception:
+        return None
 
 
 def carregar_config_entrega() -> tuple[str, bool]:
@@ -273,8 +319,9 @@ class DocumentacaoPDF(FPDF):
             "classificação ESG."
         )
         self.paragrafo(
-            "O projeto entrega pipeline executável, CSVs de resultado, dashboards HTML e Streamlit, "
-            "modelo de IA (RandomForest) e persistência opcional em Oracle."
+            "O projeto entrega pipeline executável via menu (python menu.py), CSVs de resultado, "
+            "dashboards HTML e Streamlit, análise de séries temporais em R (opção R), modelo de IA "
+            "(RandomForest) e persistência opcional em Oracle."
         )
         self.paragrafo(
             "Solução acadêmica. Não substitui laudo técnico, auditoria ESG ou projeto de engenharia."
@@ -299,23 +346,33 @@ class DocumentacaoPDF(FPDF):
 
         self.subtitulo("Tecnologias")
         self.paragrafo(
-            "Python 3.10+, Pandas, Requests, Scikit-learn, Joblib, Matplotlib, Streamlit, "
-            "FPDF2, CSV, HTML, NASA POWER e Oracle (oracledb, opcional)."
+            "Python 3.10+, R 4.x (Rscript), Pandas, Requests, Scikit-learn, Joblib, Matplotlib, "
+            "Streamlit, FPDF2, CSV, HTML, NASA POWER e Oracle (oracledb, opcional)."
         )
 
         self.subtitulo("Pipeline resumido")
         self.linha_tabela(["Etapa", "Nome", "O que faz"], negrito=True)
         for etapa, nome, descricao in PIPELINE_RESUMO:
             self.linha_tabela([etapa, nome, descricao])
+        self.linha_tabela(["R (lote)", "Séries temporais", "scripts/r/analise_serie_climatica.R"])
+
+        self.subtitulo("Menu principal (python menu.py)")
+        self.linha_tabela(["Opção", "Ação"], negrito=True)
+        for tecla, descricao in MENU_LOTE:
+            self.linha_tabela([tecla, descricao])
+        self.item_lista("Complementares: [9] treinar IA, [10] gerar este PDF")
 
         self.subtitulo("Como executar")
         self.paragrafo("Instalação: pip install -r requirements.txt")
         self.paragrafo("Menu principal: python menu.py")
-        self.paragrafo("Ordem sugerida para demonstração: P (pipeline 2-7) -> 9 (IA) -> S (Streamlit).")
+        self.paragrafo(
+            "Ordem sugerida: P (pipeline 2-7) -> R (series temporais) -> 9 ou T (IA) -> S (Streamlit) -> 10 (PDF)."
+        )
         self.ln(1)
         self.paragrafo("Principais entregas geradas:", estilo="B")
         self.item_lista("src/data/resultados_regioes.csv")
         self.item_lista("src/output/dashboard_poc.html")
+        self.item_lista("src/output/r_relatorio_series_temporais.md (opção R)")
         self.item_lista("src/frontend/dashboard_streamlit.py (visões POC e análise interativa IA)")
         self.item_lista("src/models/score_regiao_model.joblib (após etapa 9)")
 
@@ -376,6 +433,8 @@ class DocumentacaoPDF(FPDF):
                 self.image(str(caminho), w=largura)
                 self.ln(5)
 
+        self._secao_analise_r()
+
         if ARQUIVO_MODELO_META_JSON.exists():
             try:
                 meta = json.loads(ARQUIVO_MODELO_META_JSON.read_text(encoding="utf-8"))
@@ -385,6 +444,47 @@ class DocumentacaoPDF(FPDF):
                 self.item_lista(f"Treinado em: {meta.get('treinado_em', 'N/A')}")
             except Exception:
                 pass
+
+    def _secao_analise_r(self) -> None:
+        if not ARQUIVO_R_RESUMO.exists() and not DIR_R_GRAFICOS.exists():
+            self.ln(3)
+            self.subtitulo("Análise R (séries temporais)")
+            self.paragrafo(
+                "Não executada nesta geração. Rode python menu.py → opção R (após etapa 2) e regenere o PDF."
+            )
+            return
+
+        self.ln(3)
+        self.subtitulo("Análise R (séries temporais)")
+        self.paragrafo(
+            "Disciplina Statistical Computing with R: série diária NASA POWER 2025, "
+            "detecção de anomalias por z-score (|z| > 2) e gráficos em src/output/r_graficos/."
+        )
+
+        if ARQUIVO_R_RESUMO.exists():
+            try:
+                dados = json.loads(ARQUIVO_R_RESUMO.read_text(encoding="utf-8"))
+                self.item_lista(f"Registros analisados: {dados.get('registros', 'N/A')}")
+                self.item_lista(f"Gerado em: {dados.get('gerado_em', 'N/A')}")
+                total_anomalias = contar_anomalias_r()
+                if total_anomalias is not None:
+                    self.item_lista(f"Anomalias detectadas (3 regiões): {total_anomalias}")
+            except Exception:
+                pass
+
+        grafico = resolver_grafico_r()
+        if grafico and grafico.exists():
+            self.ln(2)
+            self.set_font(FAMILIA_FONTE, "B", 10)
+            self.set_x(self.l_margin)
+            self.multi_cell(self.largura_util(), 6, f"Gráfico R: {grafico.name}")
+            self.ln(2)
+            if self.get_y() > self.h - 90:
+                self.add_page()
+            largura = self.largura_util()
+            self.set_x(self.l_margin)
+            self.image(str(grafico), w=largura * 0.92)
+            self.ln(5)
 
     def secao_conclusao(self) -> None:
         self.nova_secao("4. Conclusões")
@@ -396,6 +496,41 @@ class DocumentacaoPDF(FPDF):
         self.linha_tabela(["Sensores de água", "Simulados em Python"])
         self.linha_tabela(["Classificação final", "Regras determinísticas (etapa 5)"])
         self.linha_tabela(["Ranking IA", "RandomForest sobre resultados_regioes.csv"])
+
+        self.subtitulo("Integração com as disciplinas do semestre")
+        self.linha_tabela(["Disciplina", "Evidência no projeto"], negrito=True)
+        for disciplina, evidencia in DISCIPLINAS_RESUMO:
+            self.linha_tabela([disciplina, evidencia])
+
+        self.subtitulo("Ética e governança da IA")
+        self.item_lista(
+            "Classificação oficial por regras determinísticas; IA não substitui decisão humana."
+        )
+        self.item_lista(
+            "Modelo treinado com 3 regiões e ampliação sintética — não generaliza para outras cidades."
+        )
+        self.item_lista(
+            "POC acadêmica: não substitui laudo ambiental, auditoria ESG ou licenciamento."
+        )
+
+        self.subtitulo("Segurança dos dados")
+        self.item_lista("Credenciais Oracle apenas em .env (fora do Git, listado no .gitignore).")
+        self.item_lista("Exemplo sem segredo: config/oracle.example.env")
+        self.item_lista("POC sem dados pessoais; clima público NASA POWER.")
+
+        self.subtitulo("Sensores e sistemas embarcados")
+        self.item_lista(
+            "Leituras simuladas em Python (pH, turbidez, condutividade, nível, temperatura da água)."
+        )
+        self.item_lista("Arquitetura futura ESP32/MQTT documentada em hardware/esp32/README.md.")
+
+        self.subtitulo("Impacto social e formação social")
+        self.item_lista(
+            "Comparação territorial ESG entre Barueri/SP, Rio/RJ e Curitiba/PR."
+        )
+        self.item_lista(
+            "Score técnico não dispensa consulta a comunidades e órgãos ambientais."
+        )
 
         self.subtitulo("Limites")
         self.paragrafo(
