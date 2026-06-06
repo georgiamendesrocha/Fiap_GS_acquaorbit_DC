@@ -32,7 +32,6 @@ from pdf_gerar_capturas import gerar_capturas_pdf  # noqa: E402
 from fpdf import FPDF
 
 LINK_REPOSITORIO = "https://github.com/georgiamendesrocha/Fiap_GS_acquaorbit_DC"
-LINK_VIDEO_PLACEHOLDER = "https://youtu.be/SEU_LINK_AQUI"
 ARQUIVO_ENTREGA_GS = ROOT / "config" / "entrega_gs.py"
 ARQUIVO_PDF = OUTPUT / "acqua_orbit_dc_documentacao.pdf"
 ARQUIVO_RESULTADOS = DATA / "resultados_regioes.csv"
