@@ -48,30 +48,30 @@ INTEGRANTES = [
 ]
 
 TUTOR = "Nicolly Candida Rodrigues de Souza"
-COORDENADOR = "Andre Godoi Chiovato"
+COORDENADOR = "André Godoi Chiovato"
 
 PIPELINE_RESUMO = [
     ("1 (opcional)", "NASA POWER", "Baixa clima real por coordenadas"),
-    ("2", "Tratamento", "Prepara serie climatica diaria"),
-    ("3", "Regioes", "Monta base oficial das 3 regioes"),
-    ("4", "Validacao", "Confere estrutura do CSV"),
-    ("5", "Resultados", "Calcula scores, sensores e classificacao"),
+    ("2", "Tratamento", "Prepara série climática diária"),
+    ("3", "Regiões", "Monta base oficial das 3 regiões"),
+    ("4", "Validação", "Confere estrutura do CSV"),
+    ("5", "Resultados", "Calcula scores, sensores e classificação"),
     ("6", "Dashboard HTML", "Gera dashboard_poc.html"),
-    ("7", "Persistencia", "Oracle ou fallback CSV"),
+    ("7", "Persistência", "Oracle ou fallback CSV"),
     ("8 (opcional)", "Consulta Oracle", "Exibe ranking no terminal"),
     ("9", "Modelo IA", "Treina RandomForest"),
     ("10", "PDF", "Gera este documento"),
 ]
 
 RANKING_POC = [
-    ("1", "Barueri/Tambore - SP", "7.11", "favoravel"),
-    ("2", "Curitiba - PR", "6.81", "atencao"),
-    ("3", "Rio de Janeiro (Barra/Jacarepagua) - RJ", "5.92", "atencao"),
+    ("1", "Barueri/Tamboré - SP", "7.11", "favorável"),
+    ("2", "Curitiba - PR", "6.81", "atenção"),
+    ("3", "Rio de Janeiro (Barra/Jacarepaguá) - RJ", "5.92", "atenção"),
 ]
 
 TRECHOS_CODIGO: list[tuple[str, Path, list[str]]] = [
     (
-        "Simulacao de sensores e classificacao final",
+        "Simulação de sensores e classificação final",
         SRC / "pipeline" / "05_calcular_resultados_poc.py",
         ["simular_sensores_agua", "classificar_regiao"],
     ),
@@ -159,7 +159,7 @@ class DocumentacaoPDF(FPDF):
         self.set_y(-12)
         self.set_font(FAMILIA_FONTE, "I", 8)
         self.set_text_color(100, 100, 100)
-        self.cell(0, 8, f"Acqua Orbit DC - Grupo 13 | Pagina {self.page_no()}", align="C")
+        self.cell(0, 8, f"Acqua Orbit DC - Grupo 13 | Página {self.page_no()}", align="C")
 
     def largura_util(self) -> float:
         return self.w - self.l_margin - self.r_margin
@@ -216,7 +216,7 @@ class DocumentacaoPDF(FPDF):
         self.cell(
             0,
             6,
-            "FIAP - Faculdade de Informatica e Administracao Paulista",
+            "FIAP - Faculdade de Informática e Administração Paulista",
             new_x="LMARGIN",
             new_y="NEXT",
             align="C",
@@ -231,16 +231,16 @@ class DocumentacaoPDF(FPDF):
         self.cell(0, 7, "Grupo 13", new_x="LMARGIN", new_y="NEXT", align="C")
         self.ln(3)
         self.set_font(FAMILIA_FONTE, "", 10)
-        self.cell(0, 6, f"Repositorio: {LINK_REPOSITORIO}", new_x="LMARGIN", new_y="NEXT", align="C")
+        self.cell(0, 6, f"Repositório: {LINK_REPOSITORIO}", new_x="LMARGIN", new_y="NEXT", align="C")
         self.ln(5)
 
-        self.subtitulo("Video demonstrativo (Global Solution)")
+        self.subtitulo("Vídeo demonstrativo (Global Solution)")
         self.ln(1)
         self.linha_tabela(["Item", "Valor"], negrito=True)
         link = self.link_video or "Aguardando link"
-        podio = "Sim" if self.concorrer_podio else "Nao"
-        self.linha_tabela(["Link do video", link])
-        self.linha_tabela(["Concorrencia ao podio", podio])
+        podio = "Sim" if self.concorrer_podio else "Não"
+        self.linha_tabela(["Link do vídeo", link])
+        self.linha_tabela(["Concorrência ao pódio", podio])
         self.ln(4)
 
         self.subtitulo("Integrantes")
@@ -263,39 +263,39 @@ class DocumentacaoPDF(FPDF):
         )
 
     def secao_introducao(self) -> None:
-        self.nova_secao("1. Introducao")
+        self.nova_secao("1. Introdução")
 
-        self.subtitulo("Descricao")
+        self.subtitulo("Descrição")
         self.paragrafo(
-            "POC da Global Solution 2026.1 que compara tres regioes candidatas a data center "
-            "(Barueri/SP, Rio de Janeiro/RJ e Curitiba/PR) usando dados climaticos da NASA POWER, "
-            "indicadores ambientais parametrizados, sensores de agua simulados e regras de "
-            "classificacao ESG."
+            "POC da Global Solution 2026.1 que compara três regiões candidatas a data center "
+            "(Barueri/SP, Rio de Janeiro/RJ e Curitiba/PR) usando dados climáticos da NASA POWER, "
+            "indicadores ambientais parametrizados, sensores de água simulados e regras de "
+            "classificação ESG."
         )
         self.paragrafo(
-            "O projeto entrega pipeline executavel, CSVs de resultado, dashboards HTML e Streamlit, "
-            "modelo de IA (RandomForest) e persistencia opcional em Oracle."
+            "O projeto entrega pipeline executável, CSVs de resultado, dashboards HTML e Streamlit, "
+            "modelo de IA (RandomForest) e persistência opcional em Oracle."
         )
         self.paragrafo(
-            "Solucao academica. Nao substitui laudo tecnico, auditoria ESG ou projeto de engenharia."
+            "Solução acadêmica. Não substitui laudo técnico, auditoria ESG ou projeto de engenharia."
         )
 
         self.subtitulo("Objetivo")
         self.paragrafo(
-            "Avaliar, com base em clima e coordenadas geograficas, qual regiao apresenta melhor "
-            "equilibrio entre risco ambiental, reuso pluvial, infraestrutura critica e resiliencia "
-            "para apoiar decisao em data centers sustentaveis."
+            "Avaliar, com base em clima e coordenadas geográficas, qual região apresenta melhor "
+            "equilíbrio entre risco ambiental, reuso pluvial, infraestrutura crítica e resiliência "
+            "para apoiar decisão em data centers sustentáveis."
         )
 
-        self.subtitulo("Conexao com o tema espacial")
+        self.subtitulo("Conexão com o tema espacial")
         self.paragrafo(
-            "A NASA POWER fornece dados climaticos derivados de observacoes espaciais. "
-            "A POC usa essas informacoes na Terra para comparar regioes candidatas a infraestrutura "
-            "critica digital com criterios ambientais e de resiliencia."
+            "A NASA POWER fornece dados climáticos derivados de observações espaciais. "
+            "A POC usa essas informações na Terra para comparar regiões candidatas a infraestrutura "
+            "crítica digital com critérios ambientais e de resiliência."
         )
 
     def secao_desenvolvimento(self) -> None:
-        self.nova_secao("2. Desenvolvimento da solucao")
+        self.nova_secao("2. Desenvolvimento da solução")
 
         self.subtitulo("Tecnologias")
         self.paragrafo(
@@ -309,21 +309,21 @@ class DocumentacaoPDF(FPDF):
             self.linha_tabela([etapa, nome, descricao])
 
         self.subtitulo("Como executar")
-        self.paragrafo("Instalacao: pip install -r requirements.txt")
+        self.paragrafo("Instalação: pip install -r requirements.txt")
         self.paragrafo("Menu principal: python menu.py")
-        self.paragrafo("Ordem sugerida para demonstracao: P (pipeline 2-7) -> 9 (IA) -> S (Streamlit).")
+        self.paragrafo("Ordem sugerida para demonstração: P (pipeline 2-7) -> 9 (IA) -> S (Streamlit).")
         self.ln(1)
         self.paragrafo("Principais entregas geradas:", estilo="B")
         self.item_lista("src/data/resultados_regioes.csv")
         self.item_lista("src/output/dashboard_poc.html")
-        self.item_lista("src/frontend/dashboard_streamlit.py (visoes POC e analise interativa IA)")
-        self.item_lista("src/models/score_regiao_model.joblib (apos etapa 9)")
+        self.item_lista("src/frontend/dashboard_streamlit.py (visões POC e análise interativa IA)")
+        self.item_lista("src/models/score_regiao_model.joblib (após etapa 9)")
 
     def secao_resultados(self, capturas: list[tuple[str, Path]]) -> None:
         self.nova_secao("3. Resultados")
 
         self.subtitulo("Ranking da POC")
-        self.linha_tabela(["#", "Regiao", "Score", "Classificacao"], negrito=True)
+        self.linha_tabela(["#", "Região", "Score", "Classificação"], negrito=True)
         for pos, regiao, score, classe in RANKING_POC:
             self.linha_tabela([pos, regiao, score, classe])
 
@@ -335,9 +335,9 @@ class DocumentacaoPDF(FPDF):
                     "score_final_poc_0_10", ascending=False
                 )
                 self.ln(3)
-                self.subtitulo("Dados da ultima execucao")
+                self.subtitulo("Dados da última execução")
                 self.linha_tabela(
-                    ["Regiao", "UF", "Score", "Classificacao", "Qualidade agua"],
+                    ["Região", "UF", "Score", "Classificação", "Qualidade da água"],
                     negrito=True,
                 )
                 for _, row in df.iterrows():
@@ -355,7 +355,7 @@ class DocumentacaoPDF(FPDF):
 
         if capturas:
             self.ln(3)
-            self.subtitulo("Evidencias visuais")
+            self.subtitulo("Evidências visuais")
             self.paragrafo(
                 "Capturas do ranking, dashboard HTML e Streamlit interativo."
             )
@@ -381,41 +381,41 @@ class DocumentacaoPDF(FPDF):
                 meta = json.loads(ARQUIVO_MODELO_META_JSON.read_text(encoding="utf-8"))
                 self.subtitulo("Modelo de IA")
                 self.item_lista(f"Algoritmo: {meta.get('algoritmo', 'N/A')}")
-                self.item_lista(f"MAE nas regioes reais: {meta.get('mae_regioes_reais', 'N/A')}")
+                self.item_lista(f"MAE nas regiões reais: {meta.get('mae_regioes_reais', 'N/A')}")
                 self.item_lista(f"Treinado em: {meta.get('treinado_em', 'N/A')}")
             except Exception:
                 pass
 
     def secao_conclusao(self) -> None:
-        self.nova_secao("4. Conclusoes")
+        self.nova_secao("4. Conclusões")
 
         self.subtitulo("Origem dos dados")
         self.linha_tabela(["Tipo", "Origem"], negrito=True)
         self.linha_tabela(["Clima", "NASA POWER (real, 2025)"])
         self.linha_tabela(["Risco e infraestrutura", "Parametrizados para a POC"])
-        self.linha_tabela(["Sensores de agua", "Simulados em Python"])
-        self.linha_tabela(["Classificacao final", "Regras deterministicas (etapa 5)"])
+        self.linha_tabela(["Sensores de água", "Simulados em Python"])
+        self.linha_tabela(["Classificação final", "Regras determinísticas (etapa 5)"])
         self.linha_tabela(["Ranking IA", "RandomForest sobre resultados_regioes.csv"])
 
         self.subtitulo("Limites")
         self.paragrafo(
-            "POC academica com sensores simulados e indicadores parametrizados. "
-            "Nao cobre licenciamento ambiental, projeto eletrico, telecom ou engenharia de data center."
+            "POC acadêmica com sensores simulados e indicadores parametrizados. "
+            "Não cobre licenciamento ambiental, projeto elétrico, telecom ou engenharia de data center."
         )
 
-        self.subtitulo("Conclusao")
+        self.subtitulo("Conclusão")
         self.paragrafo(
-            "O Acqua Orbit DC demonstra como dados climaticos de origem espacial podem apoiar "
-            "a comparacao de regioes candidatas a data centers sustentaveis. "
-            "Barueri/SP liderou o ranking da POC com melhor equilibrio entre clima, ESG, "
-            "infraestrutura e qualidade simulada da agua."
+            "O Acqua Orbit DC demonstra como dados climáticos de origem espacial podem apoiar "
+            "a comparação de regiões candidatas a data centers sustentáveis. "
+            "Barueri/SP liderou o ranking da POC com melhor equilíbrio entre clima, ESG, "
+            "infraestrutura e qualidade simulada da água."
         )
 
     def anexo_codigo(self) -> None:
-        self.nova_secao("5. Anexo - trechos de codigo")
+        self.nova_secao("5. Anexo - trechos de código")
         self.paragrafo(
-            "Trechos em formato texto, conforme exigencia da Global Solution. "
-            "Codigo completo no repositorio GitHub."
+            "Trechos em formato texto, conforme exigência da Global Solution. "
+            "Código completo no repositório GitHub."
         )
         self.ln(2)
 
@@ -433,11 +433,11 @@ class DocumentacaoPDF(FPDF):
 
     def links_entrega(self) -> None:
         self.nova_secao("6. Links para entrega")
-        self.item_lista(f"Repositorio GitHub: {LINK_REPOSITORIO}")
+        self.item_lista(f"Repositório GitHub: {LINK_REPOSITORIO}")
         link = self.link_video or "Aguardando link"
-        podio = "Sim" if self.concorrer_podio else "Nao"
-        self.item_lista(f"Link do video: {link}")
-        self.item_lista(f"Concorrencia ao podio: {podio}")
+        podio = "Sim" if self.concorrer_podio else "Não"
+        self.item_lista(f"Link do vídeo: {link}")
+        self.item_lista(f"Concorrência ao pódio: {podio}")
         self.paragrafo(
             "Arquivo para upload na plataforma FIAP: src/output/acqua_orbit_dc_documentacao.pdf"
         )

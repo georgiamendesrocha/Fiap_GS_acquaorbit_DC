@@ -203,7 +203,7 @@ def captura_streamlit_ranking_ia(df: pd.DataFrame) -> Path:
     ax_podio.set_xlim(0, 3)
     ax_podio.set_ylim(0, 1)
     ax_podio.axis("off")
-    ax_podio.set_title("Dashboard Streamlit - Podio IA", fontweight="bold", color="#0f4c5c", pad=10)
+    ax_podio.set_title("Dashboard Streamlit - Pódio IA", fontweight="bold", color="#0f4c5c", pad=10)
 
     posicoes = [0.5, 1.5, 2.5]
     alturas = [0.55, 0.75, 0.45]
@@ -436,10 +436,10 @@ def gerar_capturas_pdf() -> list[tuple[str, Path]]:
     df_ia = carregar_resultados_ia()
 
     return [
-        ("Ranking final da POC - regras etapa 05", captura_pipeline_ranking(df)),
-        ("Dashboard HTML - etapa 06", captura_dashboard_html_poc(df)),
-        ("Streamlit - podio e ranking IA", captura_streamlit_ranking_ia(df_ia)),
-        ("Streamlit - comparativo IA x regras POC", captura_streamlit_comparativo(df_ia)),
+        ("Ranking final da POC — regras etapa 05", captura_pipeline_ranking(df)),
+        ("Dashboard HTML — etapa 06", captura_dashboard_html_poc(df)),
+        ("Streamlit — pódio e ranking IA", captura_streamlit_ranking_ia(df_ia)),
+        ("Streamlit — comparativo IA x regras POC", captura_streamlit_comparativo(df_ia)),
     ]
 
 
