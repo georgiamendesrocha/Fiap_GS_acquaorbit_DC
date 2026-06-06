@@ -14,15 +14,10 @@ Repositório: https://github.com/georgiamendesrocha/Fiap_GS_acquaorbit_DC
 
 ## Vídeo demonstrativo (Global Solution)
 
-Vídeo de até 5 minutos no YouTube (**não listado**), conforme exigência da GS.
-
 | Item | Valor |
 |------|--------|
-| Status | Pendente de publicação |
-| Link | `https://youtu.be/SEU_LINK_AQUI` |
-| Configuração | `config/entrega_gs.py` → `LINK_VIDEO_YOUTUBE` |
-
-Quando o vídeo estiver no ar, substitua `SEU_LINK_AQUI` nesta tabela e no `config/entrega_gs.py`, depois regenere o PDF (`python menu.py` → opção **10**).
+| Link do vídeo | Aguardando link |
+| Concorrência ao pódio | Não |
 
 ## 👨‍🎓 Integrantes
 
@@ -213,7 +208,7 @@ src/output/dashboard_poc.html
 
 Gera `src/output/acqua_orbit_dc_documentacao.pdf` com a mesma abertura do README e corpo resumido:
 
-1. Capa — logo FIAP, grupo, repositório, vídeo, integrantes, professores
+1. Capa — logo FIAP, grupo, repositório, link do vídeo, concorrência ao pódio, integrantes, professores
 2. Introdução — descrição, objetivo e tema espacial
 3. Desenvolvimento — tecnologias, pipeline resumido e como executar
 4. Resultados — ranking, tabela da execução, capturas visuais e IA

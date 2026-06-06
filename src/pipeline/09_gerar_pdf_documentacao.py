@@ -236,13 +236,12 @@ class DocumentacaoPDF(FPDF):
         self.ln(5)
 
         self.subtitulo("Video demonstrativo (Global Solution)")
-        self.paragrafo("Video de ate 5 minutos no YouTube (nao listado), conforme exigencia da GS.")
         self.ln(1)
         self.linha_tabela(["Item", "Valor"], negrito=True)
-        status = "Publicado" if self.link_video else "Pendente de publicacao"
-        link = self.link_video or LINK_VIDEO_PLACEHOLDER
-        self.linha_tabela(["Status", status])
-        self.linha_tabela(["Link", link])
+        link = self.link_video or "Aguardando link"
+        podio = "Sim" if self.concorrer_podio else "Nao"
+        self.linha_tabela(["Link do video", link])
+        self.linha_tabela(["Concorrencia ao podio", podio])
         self.ln(4)
 
         self.subtitulo("Integrantes")
@@ -252,13 +251,6 @@ class DocumentacaoPDF(FPDF):
         self.subtitulo("Professores")
         self.item_lista(f"Tutor(a): {TUTOR}")
         self.item_lista(f"Coordenador(a): {COORDENADOR}")
-
-        if self.concorrer_podio:
-            self.ln(4)
-            self.set_font(FAMILIA_FONTE, "B", 13)
-            self.set_text_color(15, 90, 110)
-            self.cell(0, 8, "QUERO CONCORRER", new_x="LMARGIN", new_y="NEXT", align="C")
-            self.set_text_color(50, 50, 50)
 
         self.ln(4)
         self.set_font(FAMILIA_FONTE, "I", 9)
@@ -443,12 +435,10 @@ class DocumentacaoPDF(FPDF):
     def links_entrega(self) -> None:
         self.nova_secao("6. Links para entrega")
         self.item_lista(f"Repositorio GitHub: {LINK_REPOSITORIO}")
-        if self.link_video:
-            self.item_lista(f"Video demonstrativo (YouTube nao listado): {self.link_video}")
-        else:
-            self.item_lista(f"Video demonstrativo: {LINK_VIDEO_PLACEHOLDER} (pendente)")
-        if self.concorrer_podio:
-            self.item_lista('Podio: frase "QUERO CONCORRER" no video e na capa.')
+        link = self.link_video or "Aguardando link"
+        podio = "Sim" if self.concorrer_podio else "Nao"
+        self.item_lista(f"Link do video: {link}")
+        self.item_lista(f"Concorrencia ao podio: {podio}")
         self.paragrafo(
             "Arquivo para upload na plataforma FIAP: src/output/acqua_orbit_dc_documentacao.pdf"
         )
