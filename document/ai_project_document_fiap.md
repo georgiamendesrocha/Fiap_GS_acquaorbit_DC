@@ -322,6 +322,10 @@ python src\pipeline\09_gerar_pdf_documentacao.py
 
 https://github.com/georgiamendesrocha/Fiap_GS_acquaorbit_DC
 
-### 7.5 Observacao sobre o video
+### 7.5 Video demonstrativo
 
-O link do video demonstrativo deve ser incluido nesta secao antes da entrega final.
+- Gravar ate 5 minutos demonstrando menu, pipeline, dashboards e ranking.
+- Publicar no YouTube como **Nao listado**.
+- Colocar a URL em `config/entrega_gs.py` (campo `LINK_VIDEO_YOUTUBE`).
+- Regenerar o PDF (`python menu.py` -> opcao 10). O link aparece na capa e na secao 6 do PDF.
+- Para o podio: definir `CONCORRER_PODIO = True` e dizer **QUERO CONCORRER** nos primeiros segundos do video.

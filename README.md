@@ -12,6 +12,18 @@
 
 Repositório: https://github.com/georgiamendesrocha/Fiap_GS_acquaorbit_DC
 
+## Vídeo demonstrativo (Global Solution)
+
+Vídeo de até 5 minutos no YouTube (**não listado**), conforme exigência da GS.
+
+| Item | Valor |
+|------|--------|
+| Status | Pendente de publicação |
+| Link | `https://youtu.be/SEU_LINK_AQUI` |
+| Configuração | `config/entrega_gs.py` → `LINK_VIDEO_YOUTUBE` |
+
+Quando o vídeo estiver no ar, substitua `SEU_LINK_AQUI` nesta tabela e no `config/entrega_gs.py`, depois regenere o PDF (`python menu.py` → opção **10**).
+
 ## 👨‍🎓 Integrantes
 
 - Edemir Sufiatti - RM571375
@@ -199,22 +211,35 @@ src/output/dashboard_poc.html
 
 ### PDF de documentação (etapa 10)
 
-Gera `src/output/acqua_orbit_dc_documentacao.pdf` com estrutura enxuta:
+Gera `src/output/acqua_orbit_dc_documentacao.pdf` com a mesma abertura do README e corpo resumido:
 
-1. Capa (logo FIAP, grupo, repositório)
-2. Índice
-3. Documento acadêmico (`document/ai_project_document_fiap.md`)
-4. Resultados da última execução (tabela do CSV)
-5. Evidências visuais (4 capturas: ranking, HTML, Streamlit IA)
-6. Resumo do modelo de IA (se treinado)
-7. Anexo com trechos de código (sensores + NASA POWER)
-8. Links para entrega
+1. Capa — logo FIAP, grupo, repositório, vídeo, integrantes, professores
+2. Introdução — descrição, objetivo e tema espacial
+3. Desenvolvimento — tecnologias, pipeline resumido e como executar
+4. Resultados — ranking, tabela da execução, capturas visuais e IA
+5. Conclusões — origem dos dados e limites
+6. Anexo — trechos de código em texto
+7. Links para entrega
 
 Pré-requisito: etapa 5. Para capturas do Streamlit IA, rodar etapa 9 antes.
 
 ```powershell
 python src\pipeline\09_gerar_pdf_documentacao.py
 ```
+
+### Entrega na plataforma FIAP
+
+Checklist final (alem do repositorio Git):
+
+1. Gravar video de ate 5 min (`menu.py` -> `P` -> `9` -> `S` -> dashboards).
+2. Subir no YouTube como **Nao listado**.
+3. Editar `config/entrega_gs.py`:
+   - `LINK_VIDEO_YOUTUBE` = URL do video
+   - `CONCORRER_PODIO = True` somente se forem ao podio
+4. Regenerar PDF: `python menu.py` -> opcao **10**.
+5. Enviar na plataforma o arquivo `src/output/acqua_orbit_dc_documentacao.pdf`.
+
+**Roteiro sugerido do video (5 min):** grupo + tema -> problema -> `python menu.py` -> pipeline -> dashboard HTML -> Streamlit -> ranking -> disciplinas integradas -> link do repo.
 
 ### Oracle (opcional)
 

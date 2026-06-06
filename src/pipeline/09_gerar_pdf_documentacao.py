@@ -2,20 +2,16 @@
 Acqua Orbit DC - Etapa 09
 Gera PDF de entrega da Global Solution.
 
-Estrutura (sem repeticao de conteudo):
-  1. Capa com logo FIAP
-  2. Indice
-  3. Documento academico (ai_project_document_fiap.md)
-  4. Resultados da ultima execucao (CSV)
-  5. Evidencias visuais (4 capturas essenciais)
-  6. Modelo de IA (resumo, se existir)
-  7. Anexo - trechos de codigo
-  8. Links para entrega
+Estrutura alinhada ao README (inicio igual, corpo resumido):
+  1. Capa — logo FIAP, grupo, repo, video, integrantes, professores
+  2. Introducao — descricao e objetivo
+  3. Desenvolvimento — tecnologias, pipeline e execucao
+  4. Resultados — ranking, evidencias visuais, modelo IA
+  5. Conclusao — origem dos dados e limites
+  6. Anexo — trechos de codigo em texto
+  7. Links para entrega
 
 Saida: src/output/acqua_orbit_dc_documentacao.pdf
-
-Uso:
-    python src/pipeline/09_gerar_pdf_documentacao.py
 """
 
 from __future__ import annotations
@@ -28,7 +24,7 @@ from pathlib import Path
 
 _SRC = Path(__file__).resolve().parent
 sys.path.insert(0, str(_SRC if (_SRC / "paths.py").exists() else _SRC.parent))
-from paths import DATA, DOCUMENT, MODELS, OUTPUT, ROOT, SCRIPTS_DB, SRC, ASSETS  # noqa: E402
+from paths import DATA, MODELS, OUTPUT, ROOT, SRC, ASSETS  # noqa: E402
 
 sys.path.insert(0, str(_SRC))
 from pdf_gerar_capturas import gerar_capturas_pdf  # noqa: E402
@@ -36,10 +32,12 @@ from pdf_gerar_capturas import gerar_capturas_pdf  # noqa: E402
 from fpdf import FPDF
 
 LINK_REPOSITORIO = "https://github.com/georgiamendesrocha/Fiap_GS_acquaorbit_DC"
+LINK_VIDEO_PLACEHOLDER = "https://youtu.be/SEU_LINK_AQUI"
+ARQUIVO_ENTREGA_GS = ROOT / "config" / "entrega_gs.py"
 ARQUIVO_PDF = OUTPUT / "acqua_orbit_dc_documentacao.pdf"
 ARQUIVO_RESULTADOS = DATA / "resultados_regioes.csv"
-ARQUIVO_MODELO_META = MODELS / "score_regiao_metadata.json"
-ARQUIVO_DOCUMENTO_GS = DOCUMENT / "ai_project_document_fiap.md"
+ARQUIVO_MODELO_META = MODELS / "score_regiao_model.joblib"
+ARQUIVO_MODELO_META_JSON = MODELS / "score_regiao_metadata.json"
 LOGO_FIAP = ASSETS / "logo-fiap.png"
 
 INTEGRANTES = [
@@ -48,6 +46,28 @@ INTEGRANTES = [
     "Georgia Mendes Rocha - RM573281",
     "Marina Leme Soares - RM570461",
     "Jocasta de Kacia Bortolacci - RM564730",
+]
+
+TUTOR = "Nicolly Candida Rodrigues de Souza"
+COORDENADOR = "Andre Godoi Chiovato"
+
+PIPELINE_RESUMO = [
+    ("1 (opcional)", "NASA POWER", "Baixa clima real por coordenadas"),
+    ("2", "Tratamento", "Prepara serie climatica diaria"),
+    ("3", "Regioes", "Monta base oficial das 3 regioes"),
+    ("4", "Validacao", "Confere estrutura do CSV"),
+    ("5", "Resultados", "Calcula scores, sensores e classificacao"),
+    ("6", "Dashboard HTML", "Gera dashboard_poc.html"),
+    ("7", "Persistencia", "Oracle ou fallback CSV"),
+    ("8 (opcional)", "Consulta Oracle", "Exibe ranking no terminal"),
+    ("9", "Modelo IA", "Treina RandomForest"),
+    ("10", "PDF", "Gera este documento"),
+]
+
+RANKING_POC = [
+    ("1", "Barueri/Tambore - SP", "7.11", "favoravel"),
+    ("2", "Curitiba - PR", "6.81", "atencao"),
+    ("3", "Rio de Janeiro (Barra/Jacarepagua) - RJ", "5.92", "atencao"),
 ]
 
 TRECHOS_CODIGO: list[tuple[str, Path, list[str]]] = [
@@ -65,63 +85,6 @@ TRECHOS_CODIGO: list[tuple[str, Path, list[str]]] = [
 
 FONT_DIR = ASSETS / "fonts"
 FAMILIA_FONTE = "Projeto"
-
-_EMOJI_RE = re.compile(
-    "["
-    "\U0001F600-\U0001F64F"
-    "\U0001F300-\U0001F5FF"
-    "\U0001F680-\U0001F6FF"
-    "\U0001F1E0-\U0001F1FF"
-    "\U00002702-\U000027B0"
-    "\U000024C2-\U0001F251"
-    "]+",
-    flags=re.UNICODE,
-)
-
-_CORRIGIR_PATHS = [
-    ("`data/", "`src/data/"),
-    ("`output/", "`src/output/"),
-    ("`models/", "`src/models/"),
-    ("scripts\\06_gerar_visualizacoes.py", "src\\frontend\\gerar_dashboard_html.py"),
-    ("scripts/06_gerar_visualizacoes.py", "src/frontend/gerar_dashboard_html.py"),
-    ("scripts\\10_treinar_modelo_ia.py", "src\\ml\\treinar_modelo.py"),
-    ("scripts/10_treinar_modelo_ia.py", "src/ml/treinar_modelo.py"),
-    ("data/resultados_regioes.csv", "src/data/resultados_regioes.csv"),
-    ("data/regioes.csv", "src/data/regioes.csv"),
-    ("data/nasa_power_2025_diario_tratado.csv", "src/data/nasa_power_2025_diario_tratado.csv"),
-    ("output/dashboard_poc.html", "src/output/dashboard_poc.html"),
-    ("output/fallback_csv", "src/output/fallback_csv"),
-]
-
-
-def _sem_emojis(texto: str) -> str:
-    return _EMOJI_RE.sub("", texto)
-
-
-def _limpar_html_markdown(texto: str) -> str:
-    texto = _sem_emojis(texto)
-    texto = re.sub(r"<img[^>]*>", "", texto, flags=re.IGNORECASE)
-    texto = re.sub(r"<p[^>]*>", "", texto, flags=re.IGNORECASE)
-    texto = re.sub(r"</p>", "\n", texto, flags=re.IGNORECASE)
-    texto = re.sub(r"<br\s*/?>", "\n", texto, flags=re.IGNORECASE)
-    texto = re.sub(r"<a [^>]+>", "", texto, flags=re.IGNORECASE)
-    texto = re.sub(r"</a>", "", texto, flags=re.IGNORECASE)
-    return texto
-
-
-def _atualizar_paths(texto: str) -> str:
-    for antigo, novo in _CORRIGIR_PATHS:
-        texto = texto.replace(antigo, novo)
-    return texto
-
-
-def _preparar_documento_gs(conteudo: str) -> str:
-    texto = _limpar_html_markdown(conteudo)
-    texto = _atualizar_paths(texto)
-    marcador = "## 1. Introducao"
-    if marcador in texto:
-        texto = texto[texto.index(marcador) :]
-    return texto
 
 
 def resolver_fontes() -> dict[str, Path]:
@@ -154,6 +117,18 @@ def resolver_fontes() -> dict[str, Path]:
     )
 
 
+def carregar_config_entrega() -> tuple[str, bool]:
+    valores: dict[str, str | bool] = {
+        "LINK_VIDEO_YOUTUBE": "",
+        "CONCORRER_PODIO": False,
+    }
+    if ARQUIVO_ENTREGA_GS.exists():
+        exec(ARQUIVO_ENTREGA_GS.read_text(encoding="utf-8"), valores)
+    link = str(valores.get("LINK_VIDEO_YOUTUBE", "")).strip()
+    podio = bool(valores.get("CONCORRER_PODIO", False))
+    return link, podio
+
+
 def extrair_funcoes(caminho: Path, nomes: list[str]) -> str:
     if not caminho.exists():
         return ""
@@ -173,8 +148,10 @@ def extrair_funcoes(caminho: Path, nomes: list[str]) -> str:
 
 
 class DocumentacaoPDF(FPDF):
-    def __init__(self) -> None:
+    def __init__(self, link_video: str, concorrer_podio: bool) -> None:
         super().__init__(format="A4", unit="mm")
+        self.link_video = link_video
+        self.concorrer_podio = concorrer_podio
         self.set_auto_page_break(auto=True, margin=18)
         for estilo, caminho in resolver_fontes().items():
             self.add_font(FAMILIA_FONTE, estilo, str(caminho))
@@ -187,6 +164,15 @@ class DocumentacaoPDF(FPDF):
 
     def largura_util(self) -> float:
         return self.w - self.l_margin - self.r_margin
+
+    def subtitulo(self, texto: str) -> None:
+        self.ln(3)
+        self.set_font(FAMILIA_FONTE, "B", 12)
+        self.set_text_color(15, 90, 110)
+        self.set_x(self.l_margin)
+        self.multi_cell(self.largura_util(), 7, texto)
+        self.ln(2)
+        self.set_text_color(30, 30, 30)
 
     def nova_secao(self, titulo: str) -> None:
         self.add_page()
@@ -211,180 +197,234 @@ class DocumentacaoPDF(FPDF):
     def item_lista(self, texto: str) -> None:
         self.paragrafo(f"- {texto.lstrip('- ').strip()}")
 
+    def linha_tabela(self, celulas: list[str], negrito: bool = False) -> None:
+        self.set_x(self.l_margin)
+        self.set_font(FAMILIA_FONTE, "B" if negrito else "", 9)
+        self.multi_cell(self.largura_util(), 5, " | ".join(celulas))
+
     def capa(self) -> None:
+        """Inicio igual ao README: logo, titulo, grupo, repo, video, integrantes, professores."""
         self.add_page()
         if LOGO_FIAP.exists():
-            largura_logo = 50
-            self.image(str(LOGO_FIAP), x=(self.w - largura_logo) / 2, y=14, w=largura_logo)
-            self.set_y(58)
+            largura_logo = 48
+            self.image(str(LOGO_FIAP), x=(self.w - largura_logo) / 2, y=12, w=largura_logo)
+            self.set_y(54)
         else:
-            self.set_y(30)
+            self.set_y(25)
 
-        self.set_font(FAMILIA_FONTE, "B", 22)
-        self.set_text_color(15, 90, 110)
-        self.cell(0, 12, "Acqua Orbit DC", new_x="LMARGIN", new_y="NEXT", align="C")
-        self.ln(2)
-        self.set_font(FAMILIA_FONTE, "", 12)
+        self.set_font(FAMILIA_FONTE, "B", 11)
         self.set_text_color(50, 50, 50)
-        self.cell(0, 7, "Global Solution 2026.1 - FIAP", new_x="LMARGIN", new_y="NEXT", align="C")
-        self.cell(
-            0,
-            7,
-            "Economia Espacial aplicada a data centers sustentaveis",
-            new_x="LMARGIN",
-            new_y="NEXT",
-            align="C",
-        )
-        self.ln(8)
-        self.set_font(FAMILIA_FONTE, "B", 12)
-        self.cell(0, 7, "Grupo 13", new_x="LMARGIN", new_y="NEXT", align="C")
-        self.ln(2)
-        self.set_font(FAMILIA_FONTE, "", 10)
-        for nome in INTEGRANTES:
-            self.cell(0, 6, nome, new_x="LMARGIN", new_y="NEXT", align="C")
-        self.ln(6)
-        self.set_font(FAMILIA_FONTE, "I", 9)
-        self.cell(0, 6, LINK_REPOSITORIO, new_x="LMARGIN", new_y="NEXT", align="C")
         self.cell(
             0,
             6,
-            f"Gerado em {datetime.now().strftime('%d/%m/%Y %H:%M')}",
+            "FIAP - Faculdade de Informatica e Administracao Paulista",
+            new_x="LMARGIN",
+            new_y="NEXT",
+            align="C",
+        )
+        self.ln(4)
+        self.set_font(FAMILIA_FONTE, "B", 22)
+        self.set_text_color(15, 90, 110)
+        self.cell(0, 11, "Acqua Orbit DC", new_x="LMARGIN", new_y="NEXT", align="C")
+        self.ln(2)
+        self.set_font(FAMILIA_FONTE, "B", 12)
+        self.set_text_color(50, 50, 50)
+        self.cell(0, 7, "Grupo 13", new_x="LMARGIN", new_y="NEXT", align="C")
+        self.ln(3)
+        self.set_font(FAMILIA_FONTE, "", 10)
+        self.cell(0, 6, f"Repositorio: {LINK_REPOSITORIO}", new_x="LMARGIN", new_y="NEXT", align="C")
+        self.ln(5)
+
+        self.subtitulo("Video demonstrativo (Global Solution)")
+        self.paragrafo("Video de ate 5 minutos no YouTube (nao listado), conforme exigencia da GS.")
+        self.ln(1)
+        self.linha_tabela(["Item", "Valor"], negrito=True)
+        status = "Publicado" if self.link_video else "Pendente de publicacao"
+        link = self.link_video or LINK_VIDEO_PLACEHOLDER
+        self.linha_tabela(["Status", status])
+        self.linha_tabela(["Link", link])
+        self.ln(4)
+
+        self.subtitulo("Integrantes")
+        for nome in INTEGRANTES:
+            self.item_lista(nome)
+
+        self.subtitulo("Professores")
+        self.item_lista(f"Tutor(a): {TUTOR}")
+        self.item_lista(f"Coordenador(a): {COORDENADOR}")
+
+        if self.concorrer_podio:
+            self.ln(4)
+            self.set_font(FAMILIA_FONTE, "B", 13)
+            self.set_text_color(15, 90, 110)
+            self.cell(0, 8, "QUERO CONCORRER", new_x="LMARGIN", new_y="NEXT", align="C")
+            self.set_text_color(50, 50, 50)
+
+        self.ln(4)
+        self.set_font(FAMILIA_FONTE, "I", 9)
+        self.cell(
+            0,
+            5,
+            f"Documento gerado em {datetime.now().strftime('%d/%m/%Y %H:%M')}",
             new_x="LMARGIN",
             new_y="NEXT",
             align="C",
         )
 
-    def indice(self) -> None:
-        self.nova_secao("Indice")
-        secoes = [
-            "1. Documento academico da Global Solution",
-            "2. Resultados da ultima execucao",
-            "3. Evidencias visuais",
-            "4. Modelo de IA (quando treinado)",
-            "5. Anexo - trechos de codigo",
-            "6. Links para entrega",
-        ]
-        for secao in secoes:
-            self.item_lista(secao)
+    def secao_introducao(self) -> None:
+        self.nova_secao("1. Introducao")
 
-    def documento_academico(self) -> None:
-        if not ARQUIVO_DOCUMENTO_GS.exists():
-            self.nova_secao("Documento academico da Global Solution")
-            self.paragrafo("Arquivo nao encontrado: document/ai_project_document_fiap.md")
-            return
+        self.subtitulo("Descricao")
+        self.paragrafo(
+            "POC da Global Solution 2026.1 que compara tres regioes candidatas a data center "
+            "(Barueri/SP, Rio de Janeiro/RJ e Curitiba/PR) usando dados climaticos da NASA POWER, "
+            "indicadores ambientais parametrizados, sensores de agua simulados e regras de "
+            "classificacao ESG."
+        )
+        self.paragrafo(
+            "O projeto entrega pipeline executavel, CSVs de resultado, dashboards HTML e Streamlit, "
+            "modelo de IA (RandomForest) e persistencia opcional em Oracle."
+        )
+        self.paragrafo(
+            "Solucao academica. Nao substitui laudo tecnico, auditoria ESG ou projeto de engenharia."
+        )
 
-        self.nova_secao("1. Documento academico da Global Solution")
-        conteudo = _preparar_documento_gs(ARQUIVO_DOCUMENTO_GS.read_text(encoding="utf-8"))
-        self._renderizar_markdown(conteudo)
+        self.subtitulo("Objetivo")
+        self.paragrafo(
+            "Avaliar, com base em clima e coordenadas geograficas, qual regiao apresenta melhor "
+            "equilibrio entre risco ambiental, reuso pluvial, infraestrutura critica e resiliencia "
+            "para apoiar decisao em data centers sustentaveis."
+        )
 
-    def resultados_execucao(self) -> None:
-        self.nova_secao("2. Resultados da ultima execucao")
+        self.subtitulo("Conexao com o tema espacial")
+        self.paragrafo(
+            "A NASA POWER fornece dados climaticos derivados de observacoes espaciais. "
+            "A POC usa essas informacoes na Terra para comparar regioes candidatas a infraestrutura "
+            "critica digital com criterios ambientais e de resiliencia."
+        )
 
-        if not ARQUIVO_RESULTADOS.exists():
+    def secao_desenvolvimento(self) -> None:
+        self.nova_secao("2. Desenvolvimento da solucao")
+
+        self.subtitulo("Tecnologias")
+        self.paragrafo(
+            "Python 3.10+, Pandas, Requests, Scikit-learn, Joblib, Matplotlib, Streamlit, "
+            "FPDF2, CSV, HTML, NASA POWER e Oracle (oracledb, opcional)."
+        )
+
+        self.subtitulo("Pipeline resumido")
+        self.linha_tabela(["Etapa", "Nome", "O que faz"], negrito=True)
+        for etapa, nome, descricao in PIPELINE_RESUMO:
+            self.linha_tabela([etapa, nome, descricao])
+
+        self.subtitulo("Como executar")
+        self.paragrafo("Instalacao: pip install -r requirements.txt")
+        self.paragrafo("Menu principal: python menu.py")
+        self.paragrafo("Ordem sugerida para demonstracao: P (pipeline 2-7) -> 9 (IA) -> S (Streamlit).")
+        self.ln(1)
+        self.paragrafo("Principais entregas geradas:", estilo="B")
+        self.item_lista("src/data/resultados_regioes.csv")
+        self.item_lista("src/output/dashboard_poc.html")
+        self.item_lista("src/frontend/dashboard_streamlit.py (visoes POC e analise interativa IA)")
+        self.item_lista("src/models/score_regiao_model.joblib (apos etapa 9)")
+
+    def secao_resultados(self, capturas: list[tuple[str, Path]]) -> None:
+        self.nova_secao("3. Resultados")
+
+        self.subtitulo("Ranking da POC")
+        self.linha_tabela(["#", "Regiao", "Score", "Classificacao"], negrito=True)
+        for pos, regiao, score, classe in RANKING_POC:
+            self.linha_tabela([pos, regiao, score, classe])
+
+        if ARQUIVO_RESULTADOS.exists():
+            try:
+                import pandas as pd
+
+                df = pd.read_csv(ARQUIVO_RESULTADOS).sort_values(
+                    "score_final_poc_0_10", ascending=False
+                )
+                self.ln(3)
+                self.subtitulo("Dados da ultima execucao")
+                self.linha_tabela(
+                    ["Regiao", "UF", "Score", "Classificacao", "Qualidade agua"],
+                    negrito=True,
+                )
+                for _, row in df.iterrows():
+                    self.linha_tabela(
+                        [
+                            str(row.get("regiao", ""))[:28],
+                            str(row.get("estado", "")),
+                            f"{row.get('score_final_poc_0_10', 0):.2f}",
+                            str(row.get("classificacao_final", "")),
+                            str(row.get("classificacao_qualidade_agua", "")),
+                        ]
+                    )
+            except Exception:
+                pass
+
+        if capturas:
+            self.ln(3)
+            self.subtitulo("Evidencias visuais")
             self.paragrafo(
-                "Arquivo src/data/resultados_regioes.csv nao encontrado. "
-                "Execute a etapa 5 do pipeline antes de gerar o PDF."
+                "Capturas do ranking, dashboard HTML e Streamlit interativo."
             )
-            return
-
-        try:
-            import pandas as pd
-
-            df = pd.read_csv(ARQUIVO_RESULTADOS).sort_values(
-                "score_final_poc_0_10", ascending=False
-            )
-        except Exception as erro:
-            self.paragrafo(f"Erro ao ler resultados: {erro}")
-            return
-
-        self.paragrafo(
-            "Tabela gerada a partir de src/data/resultados_regioes.csv "
-            "(etapa 05). Reflete a classificacao por regras deterministicas da POC."
-        )
-        self.ln(2)
-
-        colunas = [
-            ("regiao", "Regiao"),
-            ("estado", "UF"),
-            ("score_final_poc_0_10", "Score"),
-            ("classificacao_final", "Classificacao"),
-            ("indice_esg_resiliencia_score_0_10", "ESG"),
-            ("risco_ambiental_climatico_score_0_10", "Risco"),
-            ("classificacao_qualidade_agua", "Agua"),
-        ]
-        cols_ok = [(c, r) for c, r in colunas if c in df.columns]
-
-        self.set_font(FAMILIA_FONTE, "B", 8)
-        self.set_x(self.l_margin)
-        self.multi_cell(
-            self.largura_util(),
-            5,
-            " | ".join(rotulo for _, rotulo in cols_ok),
-        )
-        self.ln(1)
-        self.set_font(FAMILIA_FONTE, "", 8)
-        for _, linha in df.iterrows():
-            self.set_x(self.l_margin)
-            valores = " | ".join(
-                f"{linha[col]:.2f}" if isinstance(linha[col], float) else str(linha[col])
-                for col, _ in cols_ok
-            )
-            self.multi_cell(self.largura_util(), 5, valores)
-
-    def evidencias_visuais(self, capturas: list[tuple[str, Path]]) -> None:
-        if not capturas:
-            return
-
-        self.nova_secao("3. Evidencias visuais")
-        self.paragrafo(
-            "Quatro capturas geradas a partir dos resultados atuais: ranking da POC, "
-            "dashboard HTML (etapa 06) e duas telas do Streamlit interativo (etapa 09)."
-        )
-        self.ln(3)
-
-        for titulo, caminho in capturas:
-            if not caminho.exists():
-                continue
-            if self.get_y() > self.h - 80:
-                self.add_page()
-            self.set_font(FAMILIA_FONTE, "B", 11)
-            self.set_x(self.l_margin)
-            self.multi_cell(self.largura_util(), 6, titulo)
             self.ln(2)
+            for titulo, caminho in capturas:
+                if not caminho.exists():
+                    continue
+                if self.get_y() > self.h - 80:
+                    self.add_page()
+                self.set_font(FAMILIA_FONTE, "B", 10)
+                self.set_x(self.l_margin)
+                self.multi_cell(self.largura_util(), 6, titulo)
+                self.ln(2)
+                largura = self.largura_util()
+                if self.get_y() + largura * 0.55 > self.h - 20:
+                    self.add_page()
+                self.set_x(self.l_margin)
+                self.image(str(caminho), w=largura)
+                self.ln(5)
 
-            largura = self.largura_util()
-            if self.get_y() + largura * 0.55 > self.h - 20:
-                self.add_page()
-            self.set_x(self.l_margin)
-            self.image(str(caminho), w=largura)
-            self.ln(6)
+        if ARQUIVO_MODELO_META_JSON.exists():
+            try:
+                meta = json.loads(ARQUIVO_MODELO_META_JSON.read_text(encoding="utf-8"))
+                self.subtitulo("Modelo de IA")
+                self.item_lista(f"Algoritmo: {meta.get('algoritmo', 'N/A')}")
+                self.item_lista(f"MAE nas regioes reais: {meta.get('mae_regioes_reais', 'N/A')}")
+                self.item_lista(f"Treinado em: {meta.get('treinado_em', 'N/A')}")
+            except Exception:
+                pass
 
-    def modelo_ia(self) -> None:
-        if not ARQUIVO_MODELO_META.exists():
-            return
+    def secao_conclusao(self) -> None:
+        self.nova_secao("4. Conclusoes")
 
-        try:
-            metadata = json.loads(ARQUIVO_MODELO_META.read_text(encoding="utf-8"))
-        except Exception:
-            return
+        self.subtitulo("Origem dos dados")
+        self.linha_tabela(["Tipo", "Origem"], negrito=True)
+        self.linha_tabela(["Clima", "NASA POWER (real, 2025)"])
+        self.linha_tabela(["Risco e infraestrutura", "Parametrizados para a POC"])
+        self.linha_tabela(["Sensores de agua", "Simulados em Python"])
+        self.linha_tabela(["Classificacao final", "Regras deterministicas (etapa 5)"])
+        self.linha_tabela(["Ranking IA", "RandomForest sobre resultados_regioes.csv"])
 
-        self.nova_secao("4. Modelo de IA")
+        self.subtitulo("Limites")
         self.paragrafo(
-            "RandomForest treinado sobre src/data/resultados_regioes.csv. "
-            "Usado na visao Analise interativa (IA) do Streamlit."
+            "POC academica com sensores simulados e indicadores parametrizados. "
+            "Nao cobre licenciamento ambiental, projeto eletrico, telecom ou engenharia de data center."
         )
-        self.ln(1)
-        self.item_lista(f"Algoritmo: {metadata.get('algoritmo', 'N/A')}")
-        self.item_lista(f"MAE nas regioes reais: {metadata.get('mae_regioes_reais', 'N/A')}")
-        self.item_lista(f"R2 no teste: {metadata.get('r2_teste', 'N/A')}")
-        self.item_lista(f"Treinado em: {metadata.get('treinado_em', 'N/A')}")
-        self.item_lista(f"Arquivo: src/models/score_regiao_model.joblib")
+
+        self.subtitulo("Conclusao")
+        self.paragrafo(
+            "O Acqua Orbit DC demonstra como dados climaticos de origem espacial podem apoiar "
+            "a comparacao de regioes candidatas a data centers sustentaveis. "
+            "Barueri/SP liderou o ranking da POC com melhor equilibrio entre clima, ESG, "
+            "infraestrutura e qualidade simulada da agua."
+        )
 
     def anexo_codigo(self) -> None:
         self.nova_secao("5. Anexo - trechos de codigo")
         self.paragrafo(
-            "Trechos representativos em texto, conforme exigencia da Global Solution. "
-            "Codigo completo no repositorio."
+            "Trechos em formato texto, conforme exigencia da Global Solution. "
+            "Codigo completo no repositorio GitHub."
         )
         self.ln(2)
 
@@ -402,23 +442,16 @@ class DocumentacaoPDF(FPDF):
 
     def links_entrega(self) -> None:
         self.nova_secao("6. Links para entrega")
-        self.item_lista(f"Repositorio: {LINK_REPOSITORIO}")
-        self.item_lista("Video demonstrativo (YouTube nao listado): [inserir link antes da entrega]")
-        self.item_lista(
-            'Para o podio: incluir "QUERO CONCORRER" no inicio do video e mencionar no PDF.'
+        self.item_lista(f"Repositorio GitHub: {LINK_REPOSITORIO}")
+        if self.link_video:
+            self.item_lista(f"Video demonstrativo (YouTube nao listado): {self.link_video}")
+        else:
+            self.item_lista(f"Video demonstrativo: {LINK_VIDEO_PLACEHOLDER} (pendente)")
+        if self.concorrer_podio:
+            self.item_lista('Podio: frase "QUERO CONCORRER" no video e na capa.')
+        self.paragrafo(
+            "Arquivo para upload na plataforma FIAP: src/output/acqua_orbit_dc_documentacao.pdf"
         )
-        self.ln(3)
-        self.paragrafo("Arquivos principais de entrega:", estilo="B")
-        entregaveis = [
-            "document/ai_project_document_fiap.md",
-            "src/output/acqua_orbit_dc_documentacao.pdf",
-            "src/data/resultados_regioes.csv",
-            "src/output/dashboard_poc.html",
-            "src/frontend/dashboard_streamlit.py",
-            "scripts/database/01_criar_tabelas_oracle.sql",
-        ]
-        for arquivo in entregaveis:
-            self.item_lista(arquivo)
 
     def _renderizar_codigo(self, linhas: list[str]) -> None:
         self.set_fill_color(245, 245, 245)
@@ -436,75 +469,6 @@ class DocumentacaoPDF(FPDF):
         self.ln(3)
         self.set_text_color(30, 30, 30)
 
-    def _renderizar_markdown(self, conteudo: str) -> None:
-        em_codigo = False
-        buffer: list[str] = []
-
-        for linha in conteudo.splitlines():
-            if linha.strip().startswith("```"):
-                if em_codigo:
-                    self._renderizar_codigo(buffer)
-                    buffer = []
-                    em_codigo = False
-                else:
-                    em_codigo = True
-                continue
-
-            if em_codigo:
-                buffer.append(linha)
-                continue
-
-            if not linha.strip():
-                self.ln(2)
-                continue
-
-            if linha.startswith("# "):
-                self.ln(2)
-                self.set_font(FAMILIA_FONTE, "B", 14)
-                self.set_x(self.l_margin)
-                self.multi_cell(self.largura_util(), 7, linha[2:].strip())
-                self.ln(1)
-                continue
-
-            if linha.startswith("## "):
-                self.ln(2)
-                self.set_font(FAMILIA_FONTE, "B", 12)
-                self.set_x(self.l_margin)
-                self.multi_cell(self.largura_util(), 6.5, linha[3:].strip())
-                self.ln(1)
-                continue
-
-            if linha.startswith("### "):
-                self.ln(1)
-                self.set_font(FAMILIA_FONTE, "B", 11)
-                self.set_x(self.l_margin)
-                self.multi_cell(self.largura_util(), 6, linha[4:].strip())
-                self.ln(1)
-                continue
-
-            if linha.startswith("#### "):
-                self.set_font(FAMILIA_FONTE, "B", 10)
-                self.set_x(self.l_margin)
-                self.multi_cell(self.largura_util(), 5.5, linha[5:].strip())
-                continue
-
-            if re.match(r"^\|.+\|$", linha.strip()):
-                celulas = [c.strip() for c in linha.strip("|").split("|")]
-                self.set_font(FAMILIA_FONTE, "", 8)
-                self.set_x(self.l_margin)
-                self.multi_cell(self.largura_util(), 4.5, " | ".join(celulas))
-                continue
-
-            if set(linha.strip()) <= {"-", "|", " ", ":"}:
-                continue
-
-            if linha.startswith("- ") or linha.startswith("* "):
-                self.item_lista(linha[2:])
-            elif re.match(r"^\d+\.\s", linha):
-                self.paragrafo(linha)
-            else:
-                self.paragrafo(linha)
-
 
 def gerar_pdf() -> tuple[Path, list[tuple[str, Path]]]:
     OUTPUT.mkdir(parents=True, exist_ok=True)
@@ -516,13 +480,16 @@ def gerar_pdf() -> tuple[Path, list[tuple[str, Path]]]:
     except FileNotFoundError as erro:
         print(f"Aviso: capturas nao geradas ({erro}).")
 
-    pdf = DocumentacaoPDF()
+    link_video, concorrer_podio = carregar_config_entrega()
+    if not link_video:
+        print("Aviso: LINK_VIDEO_YOUTUBE vazio em config/entrega_gs.py")
+
+    pdf = DocumentacaoPDF(link_video, concorrer_podio)
     pdf.capa()
-    pdf.indice()
-    pdf.documento_academico()
-    pdf.resultados_execucao()
-    pdf.evidencias_visuais(capturas)
-    pdf.modelo_ia()
+    pdf.secao_introducao()
+    pdf.secao_desenvolvimento()
+    pdf.secao_resultados(capturas)
+    pdf.secao_conclusao()
     pdf.anexo_codigo()
     pdf.links_entrega()
 
