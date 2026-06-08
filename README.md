@@ -521,13 +521,13 @@ A mesma série alimenta a etapa 3, o dashboard HTML e a aba **Clima** do Streaml
 | Exemplo sem segredo | `config/oracle.example.env` |
 | Carregamento seguro | `src/config/carregar_env.py` — variáveis só em ambiente local |
 | Dados da POC | Sem dados pessoais; clima público NASA POWER |
-| Evolução futura | TLS em APIs, MQTT com TLS para sensores, roles Oracle |
+| Evolução futura / fora da POC atual | TLS em APIs, MQTT com TLS para sensores físicos e roles Oracle |
 
 **Não fazer:** commitar `.env`, senhas em código ou prints com `ORACLE_PASSWORD`.
 
 ### Sensores e sistemas embarcados (AI Computer Systems & Sensors)
 
-Hoje as leituras são **simuladas** em Python, com os mesmos campos que um barramento ESP32/MQTT entregaria:
+Nesta POC, as leituras dos sensores são **simuladas** em Python. Os campos foram definidos para manter compatibilidade conceitual com uma possível integração futura via ESP32/MQTT:
 
 | Campo | Sensor alvo |
 |-------|-------------|
@@ -537,11 +537,11 @@ Hoje as leituras são **simuladas** em Python, com os mesmos campos que um barra
 | `nivel_reservatorio_pct` | Ultrassom / boia |
 | `temperatura_agua_c` | DS18B20 / NTC |
 
-Arquitetura de evolução: `hardware/esp32/README.md`.
+A arquitetura conceitual para evolução futura com ESP32 está documentada em `hardware/esp32/README.md`.
 
-```text
-ESP32 + sensores -> MQTT/Serial -> Python (etapa 5) -> Oracle/CSV -> Streamlit
-```
+Evolução futura: ESP32 + sensores -> MQTT/Serial -> gateway Python -> Oracle/CSV -> Streamlit
+POC atual: sensores simulados em Python -> CSV -> classificação -> dashboards
+
 
 ### Impacto social e formação social
 

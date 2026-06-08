@@ -20,10 +20,10 @@ ESP32 + sensores (pH, turbidez, nivel, condutividade, temp. agua)
 | `nivel_reservatorio_pct` | Ultrassom / boia | % |
 | `temperatura_agua_c` | DS18B20 / NTC | °C |
 
-## Prototipo minimo (futuro)
+## Possível evolução futura
 
-1. ESP32 publica JSON no Serial ou MQTT.
-2. Script Python substitui `simular_sensores_agua` por leitura real quando `SENSORES_MODO=real`.
-3. Mesmas colunas em `resultados_regioes.csv` para nao quebrar dashboards.
+Nesta POC, os sensores são simulados em Python e registrados nos CSVs do projeto.
 
-A POC academica mantem simulacao; a arquitetura garante continuidade tecnica com sensores embarcados.
+Em uma evolução futura, um ESP32 poderia publicar leituras em JSON via Serial ou MQTT, e um gateway Python poderia substituir a função de simulação por leitura real.
+
+Essa integração física não está implementada nesta entrega. O que está implementado agora é a simulação dos sensores, o processamento em Python, a geração dos resultados e a visualização nos dashboards.

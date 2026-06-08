@@ -6,7 +6,7 @@ Persistencia dos resultados finais da POC em Oracle opcional, com fallback autom
 
 ## Modo utilizado
 
-Oracle
+CSV fallback
 
 ## Registros processados
 
@@ -14,7 +14,7 @@ Oracle
 
 ## Detalhe
 
-Dados persistidos nas tabelas AO_REGIOES, AO_INDICADORES e AO_RESULTADOS_POC.
+Variaveis ORACLE_USER, ORACLE_PASSWORD e ORACLE_DSN nao encontradas em .env.
 
 ## Estrutura logica
 

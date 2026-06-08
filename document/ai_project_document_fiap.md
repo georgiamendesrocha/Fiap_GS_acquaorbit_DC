@@ -23,7 +23,7 @@
 2. Visao geral do projeto
 3. Desenvolvimento da solucao
 4. Resultados obtidos
-5. Conclusoes e trabalhos futuros
+5. Conclusões e possíveis evoluções fora do escopo da POC atual
 6. Referencias
 7. Anexos
 
@@ -250,7 +250,7 @@ Resultado do ranking validado no Oracle:
 | 2 | Curitiba | PR | 6.81 | atencao |
 | 3 | Rio de Janeiro | RJ | 5.92 | atencao |
 
-## 5. Conclusoes e Trabalhos Futuros
+## 5. Conclusões e possíveis evoluções fora do escopo da POC atual
 
 ### 5.1 Conclusao
 
@@ -258,7 +258,7 @@ O Acqua Orbit DC demonstra que dados climaticos por coordenadas, indicadores amb
 
 A POC atende ao objetivo de conectar economia espacial, analise de dados e tomada de decisao na Terra, usando dados climaticos publicos e uma metodologia transparente.
 
-### 5.2 Trabalhos futuros
+### 5.2 Possíveis evoluções futuras fora do escopo da POC atual
 
 Possiveis evolucoes:
 
