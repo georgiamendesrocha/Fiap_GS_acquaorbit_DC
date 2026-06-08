@@ -16,7 +16,7 @@ MENU = ROOT / "src" / "menu.py"
 
 _spec = importlib.util.spec_from_file_location("acqua_menu", MENU)
 if _spec is None or _spec.loader is None:
-    raise RuntimeError(f"Menu nao encontrado: {MENU}")
+    raise RuntimeError(f"Menu não encontrado: {MENU}")
 
 _mod = importlib.util.module_from_spec(_spec)
 sys.modules["acqua_menu"] = _mod

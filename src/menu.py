@@ -42,8 +42,8 @@ class Etapa:
 
 
 ETAPAS: list[Etapa] = [
-    Etapa(1, "Extrair dados climaticos da NASA POWER", API_DIR / "nasa_power.py", opcional=True, requer_internet=True),
-    Etapa(2, "Tratar dados climaticos diarios", PIPELINE_DIR / "02_tratar_dados_climaticos.py"),
+    Etapa(1, "Extrair dados climáticos da NASA POWER", API_DIR / "nasa_power.py", opcional=True, requer_internet=True),
+    Etapa(2, "Tratar dados climáticos diários", PIPELINE_DIR / "02_tratar_dados_climaticos.py"),
     Etapa(3, "Montar CSV oficial da POC (regioes.csv)", PIPELINE_DIR / "03_montar_regioes_csv.py"),
     Etapa(4, "Validar CSV oficial", PIPELINE_DIR / "04_validar_regioes_csv.py"),
     Etapa(5, "Calcular resultados finais e sensores simulados", PIPELINE_DIR / "05_calcular_resultados_poc.py"),
@@ -88,16 +88,16 @@ def exibir_menu() -> None:
 
     status_r = "OK" if SCRIPT_ANALISE_R.exists() else "AUSENTE"
     rscript = shutil.which("Rscript")
-    status_rscript = "OK" if rscript else "Rscript nao encontrado"
+    status_rscript = "OK" if rscript else "Rscript não encontrado"
 
-    print("\nAcoes complementares (fora do pipeline):\n")
+    print("\nAções complementares (fora do pipeline):\n")
     print(f"  [9] Treinar e salvar modelo de IA (dashboard Streamlit) [{status_treino}]")
-    print(f" [10] Gerar PDF da documentacao do projeto [{status_pdf}]")
+    print(f" [10] Gerar PDF da documentação do projeto [{status_pdf}]")
 
-    print("\nAcoes em lote:\n")
+    print("\nAções em lote:\n")
     print("  [P] Executar pipeline completo (etapas 2 a 7)")
     print("  [N] Executar pipeline completo com NASA (etapas 1 a 7)")
-    print(f"  [R] Analise de series temporais em R (apos etapa 2) [{status_r}, {status_rscript}]")
+    print(f"  [R] Análise de séries temporais em R (complementar, após etapa 2) [{status_r}, {status_rscript}]")
     print("  [T] Treinar e salvar modelo de IA")
     print("  [D] Abrir dashboard HTML no navegador (se existir)")
     print("  [S] Iniciar dashboard Streamlit interativo")
@@ -106,7 +106,7 @@ def exibir_menu() -> None:
 
 def executar_script(script: Path) -> bool:
     if not script.exists():
-        print(f"\nErro: script nao encontrado: {script}")
+        print(f"\nErro: script não encontrado: {script}")
         return False
 
     print(f"\n>> Executando: {script.relative_to(ROOT)}")
@@ -116,10 +116,10 @@ def executar_script(script: Path) -> bool:
 
     print("-" * 62)
     if resultado.returncode == 0:
-        print("Etapa concluida com sucesso.\n")
+        print("Etapa concluída com sucesso.\n")
         return True
 
-    print(f"Etapa finalizada com erro (codigo {resultado.returncode}).\n")
+    print(f"Etapa finalizada com erro (código {resultado.returncode}).\n")
     return False
 
 
@@ -133,14 +133,15 @@ def executar_pipeline(incluir_nasa: bool = False) -> None:
         if not executar_script(etapa.script):
             resposta = input("Deseja continuar mesmo com erro? (s/N): ").strip().lower()
             if resposta != "s":
-                print("Pipeline interrompido pelo usuario.")
+                print("Pipeline interrompido pelo usuário.")
                 return
 
     print("Pipeline completo finalizado.")
     print(f"Dashboard: {OUTPUT / 'dashboard_poc.html'}")
     print(f"Resultados: {DATA / 'resultados_regioes.csv'}")
     print(
-        "Proximo passo sugerido: R (series temporais), 9 ou T (modelo IA) e S (Streamlit)\n"
+        "Próximo passo sugerido: 9 ou T (modelo IA) e S (Streamlit). "
+        "Opcional: R (séries temporais), se o Rscript estiver instalado.\n"
     )
 
 
@@ -150,17 +151,17 @@ def treinar_modelo_ia() -> None:
 
 def executar_analise_r() -> bool:
     if not SCRIPT_ANALISE_R.exists():
-        print(f"\nErro: script R nao encontrado: {SCRIPT_ANALISE_R}\n")
+        print(f"\nErro: script R não encontrado: {SCRIPT_ANALISE_R}\n")
         return False
 
     rscript = shutil.which("Rscript")
     if not rscript:
-        print("\nErro: Rscript nao encontrado no PATH.")
+        print("\nErro: Rscript não encontrado no PATH.")
         print("Instale R (https://cran.r-project.org/) e tente novamente.\n")
         return False
 
     if not ARQUIVO_CLIMA_DIARIO.exists():
-        print("\nArquivo climatico ainda nao gerado.")
+        print("\nArquivo climático ainda não gerado.")
         print(f"Execute a etapa 2 antes: {ARQUIVO_CLIMA_DIARIO.name}\n")
         return False
 
@@ -179,20 +180,20 @@ def executar_analise_r() -> bool:
 
     print("-" * 62)
     if resultado.returncode == 0:
-        print("Analise R concluida com sucesso.")
+        print("Análise R concluída com sucesso.")
         print(f"- {OUTPUT / 'r_relatorio_series_temporais.md'}")
         print(f"- {OUTPUT / 'r_resumo_series_temporais.json'}")
-        print(f"- Graficos em: {OUTPUT / 'r_graficos'}\n")
+        print(f"- Gráficos em: {OUTPUT / 'r_graficos'}\n")
         return True
 
-    print(f"Analise R finalizada com erro (codigo {resultado.returncode}).\n")
+    print(f"Análise R finalizada com erro (código {resultado.returncode}).\n")
     return False
 
 
 def abrir_dashboard() -> None:
     dashboard = OUTPUT / "dashboard_poc.html"
     if not dashboard.exists():
-        print("\nDashboard ainda nao foi gerado. Execute a etapa 6 primeiro.\n")
+        print("\nDashboard ainda não foi gerado. Execute a etapa 6 primeiro.\n")
         return
 
     print(f"\nAbrindo: {dashboard}")
@@ -206,11 +207,11 @@ def abrir_dashboard() -> None:
 
 def iniciar_dashboard_streamlit() -> None:
     if not DASHBOARD_STREAMLIT.exists():
-        print(f"\nErro: arquivo nao encontrado: {DASHBOARD_STREAMLIT}\n")
+        print(f"\nErro: arquivo não encontrado: {DASHBOARD_STREAMLIT}\n")
         return
 
     if not (DATA / "resultados_regioes.csv").exists():
-        print("\nResultados ainda nao gerados. Execute a etapa 5 antes do dashboard Streamlit.\n")
+        print("\nResultados ainda não gerados. Execute a etapa 5 antes do dashboard Streamlit.\n")
         return
     print("\nIniciando dashboard Streamlit...")
     print("URL: http://localhost:8501")
@@ -261,12 +262,12 @@ def processar_opcao(opcao: str) -> bool:
         numero = int(opcao)
         etapa = next((e for e in ETAPAS if e.numero == numero), None)
         if etapa is None:
-            print("\nOpcao invalida. Tente novamente.\n")
+            print("\nOpção inválida. Tente novamente.\n")
             return True
         executar_script(etapa.script)
         return True
 
-    print("\nOpcao invalida. Tente novamente.\n")
+    print("\nOpção inválida. Tente novamente.\n")
     return True
 
 
@@ -275,7 +276,7 @@ def main() -> None:
     while continuar:
         limpar_tela()
         exibir_menu()
-        opcao = input("Escolha uma opcao: ")
+        opcao = input("Escolha uma opção: ")
         continuar = processar_opcao(opcao)
 
 

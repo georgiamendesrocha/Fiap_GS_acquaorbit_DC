@@ -2,16 +2,16 @@
 Acqua Orbit DC - Etapa 09
 Gera PDF de entrega da Global Solution.
 
-Estrutura alinhada ao README (inicio igual, corpo resumido):
-  1. Capa — logo FIAP, grupo, repo, video, integrantes, professores
-  2. Introducao — descricao e objetivo
-  3. Desenvolvimento — tecnologias, pipeline, menu (P, R, 9, S)
-  4. Resultados — ranking, capturas, analise R, modelo IA
-  5. Conclusoes — dados, disciplinas, etica, seguranca, sensores, social
-  6. Anexo — trechos de codigo em texto
+Estrutura alinhada ao README (início igual, corpo resumido):
+  1. Capa — logo FIAP, grupo, repo, vídeo, integrantes, professores
+  2. Introdução — descrição e objetivo
+  3. Desenvolvimento — tecnologias, pipeline, menu (P, 9, S, 10; R opcional)
+  4. Resultados — ranking, capturas, análise R, modelo IA
+  5. Conclusões — dados, disciplinas, ética, segurança, sensores, social
+  6. Anexo — trechos de código em texto
   7. Links para entrega
 
-Saida: src/output/acqua_orbit_dc_documentacao.pdf
+Saída: src/output/acqua_orbit_dc_documentacao.pdf
 """
 
 from __future__ import annotations
@@ -42,8 +42,8 @@ LOGO_FIAP = ASSETS / "logo-fiap.png"
 
 # Espelha src/menu.py (exib_menu + processar_opcao)
 ETAPAS_MENU = [
-    ("1", "Extrair dados climaticos da NASA POWER", "opcional, requer internet"),
-    ("2", "Tratar dados climaticos diarios", ""),
+    ("1", "Extrair dados climáticos da NASA POWER", "opcional, requer internet"),
+    ("2", "Tratar dados climáticos diários", ""),
     ("3", "Montar CSV oficial da POC (regioes.csv)", ""),
     ("4", "Validar CSV oficial", ""),
     ("5", "Calcular resultados finais e sensores simulados", ""),
@@ -54,19 +54,19 @@ ETAPAS_MENU = [
 
 MENU_COMPLEMENTARES = [
     ("9", "Treinar e salvar modelo de IA (dashboard Streamlit)", "src/ml/treinar_modelo.py"),
-    ("10", "Gerar PDF da documentacao do projeto", "src/pipeline/09_gerar_pdf_documentacao.py"),
+    ("10", "Gerar PDF da documentação do projeto", "src/pipeline/09_gerar_pdf_documentacao.py"),
 ]
 
 MENU_ACOES_LOTE = [
-    ("P", "Executar pipeline completo", "etapas 2 a 7 em sequencia"),
-    ("N", "Executar pipeline com NASA", "etapas 1 a 7 em sequencia"),
-    ("R", "Analise de series temporais em R", "apos etapa 2; requer Rscript no PATH"),
-    ("T", "Treinar e salvar modelo de IA", "atalho da opcao 9"),
+    ("P", "Executar pipeline completo", "etapas 2 a 7 em sequência"),
+    ("N", "Executar pipeline com NASA", "etapas 1 a 7 em sequência"),
+    ("R", "Análise de séries temporais em R", "complementar; após etapa 2; requer Rscript no PATH"),
+    ("T", "Treinar e salvar modelo de IA", "atalho da opção 9"),
     ("D", "Abrir dashboard HTML no navegador", "abre src/output/dashboard_poc.html; requer etapa 6"),
     (
         "S",
         "Iniciar dashboard Streamlit interativo",
-        "duas visoes no app: POC HTML (etapa 6) e analise IA; requer etapa 5",
+        "duas visões no app: POC HTML (etapa 6) e análise IA; requer etapa 5",
     ),
     ("0", "Sair", "encerra o menu"),
 ]
@@ -107,8 +107,12 @@ PIPELINE_RESUMO = [
 RANKING_POC = [
     ("1", "Barueri/Tamboré - SP", "7.11", "favorável"),
     ("2", "Curitiba - PR", "6.81", "atenção"),
-    ("3", "Rio de Janeiro (Barra/Jacarepaguá) - RJ", "5.92", "atenção"),
+    ("3", "Rio de Janeiro/RJ", "5.92", "atenção"),
 ]
+
+MENSAGEM_VIDEO_PENDENTE = (
+    "Link do vídeo pendente. Será inserido em breve após a publicação no YouTube."
+)
 
 TRECHOS_CODIGO: list[tuple[str, Path, list[str]]] = [
     (
@@ -193,6 +197,25 @@ def carregar_config_entrega() -> tuple[str, bool]:
     return link, podio
 
 
+def rotulo_regiao_pdf(regiao: str, estado: str = "") -> str:
+    """Rótulos curtos para tabelas do PDF sem alterar os CSVs de origem."""
+    nome = str(regiao)
+    uf = str(estado).strip()
+    if "Rio de Janeiro" in nome:
+        return "Rio de Janeiro/RJ"
+    if "Barueri" in nome:
+        return "Barueri/SP"
+    if "Curitiba" in nome:
+        return "Curitiba/PR"
+    return f"{nome}/{uf}" if uf else nome
+
+
+def legenda_grafico_r(grafico: Path) -> str:
+    if grafico.name == "serie_temp_Barueri_Tambor_.png":
+        return "Gráfico R: série temporal de temperatura média - Barueri/Tamboré"
+    return f"Gráfico R: {grafico.name}"
+
+
 def extrair_funcoes(caminho: Path, nomes: list[str]) -> str:
     if not caminho.exists():
         return ""
@@ -273,7 +296,7 @@ class DocumentacaoPDF(FPDF):
         self.multi_cell(self.largura_util(), 5, " | ".join(celulas))
 
     def capa(self) -> None:
-        """Inicio igual ao README: logo, titulo, grupo, repo, video, integrantes, professores."""
+        """Início igual ao README: logo, título, grupo, repo, vídeo, integrantes, professores."""
         self.add_page()
         if LOGO_FIAP.exists():
             largura_logo = 48
@@ -326,7 +349,7 @@ class DocumentacaoPDF(FPDF):
         self.subtitulo("Vídeo demonstrativo (Global Solution)")
         self.ln(1)
         self.linha_tabela(["Item", "Valor"], negrito=True)
-        link = self.link_video or "Aguardando link"
+        link = self.link_video or MENSAGEM_VIDEO_PENDENTE
         podio = "Sim" if self.concorrer_podio else "Não"
         self.linha_tabela(["Link do vídeo", link])
         self.linha_tabela(["Concorrência ao pódio", podio])
@@ -336,10 +359,22 @@ class DocumentacaoPDF(FPDF):
 
         self.subtitulo("Descrição")
         self.paragrafo(
-            "POC da Global Solution 2026.1 que compara três regiões candidatas a data center "
-            "(Barueri/SP, Rio de Janeiro/RJ e Curitiba/PR) usando dados climáticos da NASA POWER, "
-            "indicadores ambientais parametrizados, sensores de água simulados e regras de "
-            "classificação ESG."
+            "O Acqua Orbit DC é uma solução acadêmica desenvolvida para apoiar a análise de "
+            "regiões candidatas à instalação ou operação de data centers sustentáveis. A aplicação "
+            "compara Barueri/SP, Rio de Janeiro/RJ e Curitiba/PR a partir de dados climáticos da "
+            "NASA POWER, indicadores ambientais parametrizados, sensores de água simulados e regras "
+            "de classificação ESG."
+        )
+        self.paragrafo(
+            "A proposta transforma dados climáticos, ambientais e operacionais em uma visão simples, "
+            "comparativa e demonstrável, indicando quais regiões apresentam melhor equilíbrio entre "
+            "risco ambiental, potencial de reuso pluvial, infraestrutura crítica e resiliência."
+        )
+        self.paragrafo(
+            "Embora tenha sido desenvolvida no contexto acadêmico da Global Solution 2026.1, a "
+            "estrutura da solução foi pensada para permitir evolução futura com dados em tempo real, "
+            "sensores físicos, integração com banco de dados e apoio técnico a decisões ambientais "
+            "e operacionais."
         )
         self.paragrafo(
             "O projeto entrega pipeline executável via menu (python menu.py), CSVs de resultado, "
@@ -402,7 +437,8 @@ class DocumentacaoPDF(FPDF):
         self.paragrafo("Instalação: pip install -r requirements.txt")
         self.paragrafo("Entrada: python menu.py (atalho na raiz do repositório).")
         self.paragrafo(
-            "Ordem sugerida: P → R → 9 ou T → S → 10. A opção N inclui a etapa 1 (NASA POWER)."
+            "Ordem sugerida: P → 9 ou T → S → 10. Opcional: R, se o Rscript estiver instalado. "
+            "A opção N inclui a etapa 1 (NASA POWER), que requer internet para consultar a NASA POWER."
         )
 
         self.subtitulo("Menu principal — etapas do pipeline [1] a [8]")
@@ -459,7 +495,10 @@ class DocumentacaoPDF(FPDF):
                 for _, row in df.iterrows():
                     self.linha_tabela(
                         [
-                            str(row.get("regiao", ""))[:28],
+                            rotulo_regiao_pdf(
+                                str(row.get("regiao", "")),
+                                str(row.get("estado", "")),
+                            ),
                             str(row.get("estado", "")),
                             f"{row.get('score_final_poc_0_10', 0):.2f}",
                             str(row.get("classificacao_final", "")),
@@ -499,8 +538,16 @@ class DocumentacaoPDF(FPDF):
                 meta = json.loads(ARQUIVO_MODELO_META_JSON.read_text(encoding="utf-8"))
                 self.subtitulo("Modelo de IA")
                 self.item_lista(f"Algoritmo: {meta.get('algoritmo', 'N/A')}")
-                self.item_lista(f"MAE nas regiões reais: {meta.get('mae_regioes_reais', 'N/A')}")
+                self.item_lista(f"MAE nas regiões avaliadas: {meta.get('mae_regioes_reais', 'N/A')}")
                 self.item_lista(f"Treinado em: {meta.get('treinado_em', 'N/A')}")
+                self.paragrafo(
+                    "Esse valor deve ser interpretado com cautela, pois o modelo foi treinado em "
+                    "contexto acadêmico, com três regiões reais e ampliação sintética."
+                )
+                self.paragrafo(
+                    "Este modelo é comparativo e acadêmico. Ele não substitui a classificação oficial "
+                    "por regras nem generaliza para outras cidades sem novos dados."
+                )
             except Exception:
                 pass
 
@@ -536,7 +583,7 @@ class DocumentacaoPDF(FPDF):
             self.ln(2)
             self.set_font(FAMILIA_FONTE, "B", 10)
             self.set_x(self.l_margin)
-            self.multi_cell(self.largura_util(), 6, f"Gráfico R: {grafico.name}")
+            self.multi_cell(self.largura_util(), 6, legenda_grafico_r(grafico))
             self.ln(2)
             if self.get_y() > self.h - 90:
                 self.add_page()
@@ -597,6 +644,7 @@ class DocumentacaoPDF(FPDF):
             "Não cobre licenciamento ambiental, projeto elétrico, telecom ou engenharia de data center."
         )
 
+        self.garantir_espaco(55)
         self.subtitulo("Conclusão")
         self.paragrafo(
             "O Acqua Orbit DC demonstra como dados climáticos de origem espacial podem apoiar "
@@ -628,20 +676,15 @@ class DocumentacaoPDF(FPDF):
     def links_entrega(self) -> None:
         self.nova_secao("6. Links para entrega")
         self.item_lista(f"Repositório GitHub: {LINK_REPOSITORIO}")
-        link = self.link_video or "Aguardando link"
+        link = self.link_video or MENSAGEM_VIDEO_PENDENTE
         podio = "Sim" if self.concorrer_podio else "Não"
         self.item_lista(f"Link do vídeo: {link}")
         self.item_lista(f"Concorrência ao pódio: {podio}")
         if self.concorrer_podio:
-            self.item_lista('Frase no documento e no video: "QUERO CONCORRER"')
+            self.item_lista('Frase no documento e no vídeo: "QUERO CONCORRER"')
         self.paragrafo(
             "Arquivo para upload na plataforma FIAP: src/output/acqua_orbit_dc_documentacao.pdf"
         )
-        if not self.link_video:
-            self.paragrafo(
-                "Pendência: preencher LINK_VIDEO_YOUTUBE em config/entrega_gs.py e regerar o PDF "
-                "após publicar o vídeo como não listado no YouTube."
-            )
 
     def _renderizar_codigo(self, linhas: list[str]) -> None:
         self.set_fill_color(245, 245, 245)
@@ -668,7 +711,7 @@ def gerar_pdf() -> tuple[Path, list[tuple[str, Path]]]:
         capturas = gerar_capturas_pdf()
         print(f"Capturas geradas: {len(capturas)} imagens em src/output/pdf_capturas/")
     except FileNotFoundError as erro:
-        print(f"Aviso: capturas nao geradas ({erro}).")
+        print(f"Aviso: capturas não geradas ({erro}).")
 
     link_video, concorrer_podio = carregar_config_entrega()
     if not link_video:
@@ -688,7 +731,7 @@ def gerar_pdf() -> tuple[Path, list[tuple[str, Path]]]:
 
 
 def main() -> None:
-    print("Acqua Orbit DC - Geracao do PDF de documentacao")
+    print("Acqua Orbit DC - Geração do PDF de documentação")
     print("-" * 48)
     arquivo, capturas = gerar_pdf()
     print(f"PDF gerado: {arquivo}")

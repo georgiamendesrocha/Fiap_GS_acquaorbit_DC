@@ -1,6 +1,6 @@
 """
-Gera imagens estaticas (prints) das saidas do pipeline e do dashboard Streamlit
-para inclusao no PDF de documentacao.
+Gera imagens estáticas (prints) das saídas do pipeline e do dashboard Streamlit
+para inclusão no PDF de documentação.
 """
 
 from __future__ import annotations
@@ -15,6 +15,10 @@ from paths import DATA, DOCUMENT, MODELS, OUTPUT, ROOT, SCRIPTS_DB, SRC, ASSETS 
 import sys
 from datetime import datetime
 from pathlib import Path
+
+import matplotlib
+
+matplotlib.use("Agg")
 
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
@@ -41,7 +45,14 @@ def _cor_regiao(regiao_id: str) -> str:
 
 
 def _nome_curto(regiao: str) -> str:
-    return regiao.replace("Barra/Jacarepaguá/Parque Olímpico", "Barra/Jacarepaguá")[:28]
+    nome = str(regiao)
+    if "Rio de Janeiro" in nome:
+        return "Rio de Janeiro/RJ"
+    if "Barueri" in nome:
+        return "Barueri/SP"
+    if "Curitiba" in nome:
+        return "Curitiba/PR"
+    return nome[:32]
 
 
 def _salvar(fig: plt.Figure, nome: str) -> Path:
@@ -55,7 +66,7 @@ def _salvar(fig: plt.Figure, nome: str) -> Path:
 def carregar_resultados() -> pd.DataFrame:
     if not ARQUIVO_RESULTADOS.exists():
         raise FileNotFoundError(
-            f"Arquivo nao encontrado: {ARQUIVO_RESULTADOS}. Execute a etapa 5 do pipeline."
+            f"Arquivo não encontrado: {ARQUIVO_RESULTADOS}. Execute a etapa 5 do pipeline."
         )
     return pd.read_csv(ARQUIVO_RESULTADOS)
 
@@ -79,12 +90,12 @@ def captura_pipeline_terminal(df: pd.DataFrame) -> Path:
         "=" * 52,
         f"Execucao documentada em: {datetime.now().strftime('%d/%m/%Y %H:%M')}",
         "",
-        "[02] Dados climaticos NASA POWER tratados",
-        "[03] regioes.csv montado com 3 regioes oficiais",
-        "[04] Validacao estrutural concluida",
+        "[02] Dados climáticos NASA POWER tratados",
+        "[03] regioes.csv montado com 3 regiões oficiais",
+        "[04] Validação estrutural concluída",
         "[05] Sensores simulados e scores calculados",
         "[06] dashboard_poc.html gerado",
-        "[07] Persistencia Oracle/CSV executada",
+        "[07] Persistência Oracle/CSV executada",
         "",
         "Ranking final da POC:",
     ]
@@ -109,7 +120,7 @@ def captura_pipeline_terminal(df: pd.DataFrame) -> Path:
         color="#d7f9ff",
     )
     ax.set_title(
-        "Print - Saida consolidada do pipeline",
+        "Print - Saída consolidada do pipeline",
         color="#0f8b8d",
         fontsize=14,
         fontweight="bold",
@@ -153,8 +164,8 @@ def captura_pipeline_sensores(df: pd.DataFrame) -> Path:
 def captura_pipeline_clima(df: pd.DataFrame) -> Path:
     nomes = [_nome_curto(r) for r in df["regiao"]]
     variaveis = [
-        ("Temp. media (C)", "temperatura_media_anual_c"),
-        ("Precipitacao (mm)", "precipitacao_total_anual_mm"),
+        ("Temp. média (C)", "temperatura_media_anual_c"),
+        ("Precipitação (mm)", "precipitacao_total_anual_mm"),
         ("Umidade (%)", "umidade_media_anual_pct"),
     ]
 
@@ -164,7 +175,7 @@ def captura_pipeline_clima(df: pd.DataFrame) -> Path:
         ax.set_title(titulo, fontsize=10)
         ax.tick_params(axis="x", rotation=15)
         ax.grid(axis="y", alpha=0.2)
-    fig.suptitle("Print - Clima NASA POWER por regiao (pipeline)", fontweight="bold", color="#0f4c5c")
+    fig.suptitle("Print - Clima NASA POWER por região (pipeline)", fontweight="bold", color="#0f4c5c")
     fig.tight_layout()
     return _salvar(fig, "pipeline_clima_regioes.png")
 
@@ -224,7 +235,7 @@ def captura_streamlit_ranking_ia(df: pd.DataFrame) -> Path:
         ax_podio.text(
             posicoes[idx],
             0.08 + alturas[idx] - 0.12,
-            f"#{idx + 1}  {row['cidade']}",
+            f"#{idx + 1}  {_nome_curto(row['regiao'])}",
             ha="center",
             fontsize=10,
             fontweight="bold",
@@ -291,7 +302,7 @@ def captura_streamlit_indicadores(df: pd.DataFrame) -> Path:
         "indice_disponibilidade_energetica_score_0_10",
         "indice_qualidade_agua_score_0_10",
     ]
-    rotulos = ["ESG", "Risco ambiental", "Conectividade", "Energia", "Qualidade agua"]
+    rotulos = ["ESG", "Risco ambiental", "Conectividade", "Energia", "Qualidade água"]
     matriz = df[indicadores].values
     nomes = [_nome_curto(r) for r in df["regiao"]]
 
@@ -339,9 +350,9 @@ def captura_streamlit_sensores(df: pd.DataFrame) -> Path:
     nomes = [_nome_curto(r) for r in df["regiao"]]
     fig, axes = plt.subplots(1, 3, figsize=(11, 4.5))
     campos = [
-        ("Nivel reservatorio (%)", "nivel_reservatorio_pct", "#0f8b8d"),
+        ("Nível reservatório (%)", "nivel_reservatorio_pct", "#0f8b8d"),
         ("Condutividade (uS/cm)", "condutividade_us_cm", "#6a8d22"),
-        ("Temp. agua (C)", "temperatura_agua_c", "#d95d39"),
+        ("Temp. água (C)", "temperatura_agua_c", "#d95d39"),
     ]
     for ax, (titulo, coluna, cor) in zip(axes, campos):
         ax.bar(nomes, df[coluna], color=cor, alpha=0.9)
@@ -354,7 +365,7 @@ def captura_streamlit_sensores(df: pd.DataFrame) -> Path:
 
 
 def captura_dashboard_html_poc(df: pd.DataFrame) -> Path:
-    """Evidencia visual do dashboard HTML estatico (etapa 06)."""
+    """Evidência visual do dashboard HTML estático (etapa 06)."""
     df_ord = df.sort_values("score_final_poc_0_10", ascending=False)
     fig = plt.figure(figsize=(11, 6.5))
     gs = GridSpec(2, 3, height_ratios=[1, 1.1], hspace=0.45, wspace=0.35)
@@ -431,7 +442,7 @@ def captura_dashboard_html_poc(df: pd.DataFrame) -> Path:
 
 
 def gerar_capturas_pdf() -> list[tuple[str, Path]]:
-    """Quatro capturas essenciais para o PDF (sem repetir o mesmo ranking em varios graficos)."""
+    """Quatro capturas essenciais para o PDF (sem repetir o mesmo ranking em vários gráficos)."""
     df = carregar_resultados()
     df_ia = carregar_resultados_ia()
 

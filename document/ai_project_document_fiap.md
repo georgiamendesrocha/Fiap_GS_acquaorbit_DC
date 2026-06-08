@@ -15,68 +15,72 @@
 ### Professores
 
 - Tutor(a): Nicolly Candida Rodrigues de Souza
-- Coordenador(a): Andre Godoi Chiovato
+- Coordenador(a): André Godoi Chiovato
 
-## Sumario
+## Sumário
 
-1. Introducao
-2. Visao geral do projeto
-3. Desenvolvimento da solucao
+1. Introdução
+2. Visão geral do projeto
+3. Desenvolvimento da solução
 4. Resultados obtidos
 5. Conclusões e possíveis evoluções fora do escopo da POC atual
-6. Referencias
+6. Referências
 7. Anexos
 
-## 1. Introducao
+## 1. Introdução
 
 ### 1.1 Contexto
 
-A Global Solution 2026.1 tem como tema a economia espacial e seus impactos na Terra. Dentro desse contexto, dados climaticos, coordenadas geograficas, sensores e automacao podem apoiar decisoes mais sustentaveis em setores criticos.
+A Global Solution 2026.1 tem como tema a economia espacial e seus impactos na Terra. Dentro desse contexto, dados climáticos, coordenadas geográficas, sensores e automação podem apoiar decisões mais sustentáveis em setores críticos.
 
-O Acqua Orbit DC aplica essa ideia ao planejamento de data centers sustentaveis e resilientes. Data centers dependem de energia, agua, refrigeracao, conectividade e baixa exposicao a riscos ambientais. Por isso, comparar regioes candidatas exige integrar dados climaticos, geoespaciais, ESG e de infraestrutura critica digital.
+O Acqua Orbit DC aplica essa ideia ao planejamento de data centers sustentáveis e resilientes. Data centers dependem de energia, água, refrigeração, conectividade e baixa exposição a riscos ambientais. Por isso, comparar regiões candidatas exige integrar dados climáticos, geoespaciais, ESG e de infraestrutura crítica digital.
 
 ### 1.2 Problema
 
-O problema central e a dificuldade de comparar regioes candidatas a data centers a partir de dados dispersos sobre clima, risco ambiental, agua, conectividade, energia e resiliencia operacional.
+O problema central é a dificuldade de comparar regiões candidatas a data centers a partir de dados dispersos sobre clima, risco ambiental, água, conectividade, energia e resiliência operacional.
 
-Uma regiao pode ter bom potencial de reuso pluvial, mas risco de inundacao elevado. Outra pode ter conectividade forte, mas maior demanda de refrigeracao. A POC organiza esses fatores em uma classificacao simples e explicavel.
+Uma região pode ter bom potencial de reuso pluvial, mas risco de inundação elevado. Outra pode ter conectividade forte, mas maior demanda de refrigeração. A POC organiza esses fatores em uma classificação simples e explicável.
 
 ### 1.3 Proposta
 
-O Acqua Orbit DC e uma POC academica que compara tres regioes oficiais:
+O Acqua Orbit DC é uma POC acadêmica que compara três regiões oficiais:
 
-- Barueri/Tambore - SP
-- Rio de Janeiro - Barra/Jacarepagua/Parque Olimpico - RJ
+- Barueri/Tamboré - SP
+- Rio de Janeiro/RJ (Barra/Jacarepaguá/Parque Olímpico)
 - Curitiba - PR
 
-A solucao usa dados climaticos de 2025 da NASA POWER, indicadores parametrizados, sensores simulados, regras calculadas e persistencia opcional em Oracle para gerar uma classificacao final por regiao.
+A solução usa dados climáticos de 2025 da NASA POWER, indicadores parametrizados, sensores simulados, regras calculadas e persistência opcional em Oracle para gerar uma classificação final por região.
 
-## 2. Visao Geral do Projeto
+A proposta transforma dados climáticos, ambientais e operacionais em uma visão simples, comparativa e demonstrável, indicando quais regiões apresentam melhor equilíbrio entre risco ambiental, potencial de reuso pluvial, infraestrutura crítica e resiliência.
+
+Embora tenha sido desenvolvida no contexto acadêmico da Global Solution 2026.1, a estrutura da solução foi pensada para permitir evolução futura com dados em tempo real, sensores físicos, integração com banco de dados e apoio técnico a decisões ambientais e operacionais.
+
+## 2. Visão Geral do Projeto
 
 ### 2.1 Objetivos
 
-O objetivo principal e demonstrar como dados climaticos por coordenadas geograficas podem apoiar decisoes ESG sobre infraestrutura critica na Terra.
+O objetivo principal é demonstrar como dados climáticos por coordenadas geográficas podem apoiar decisões ESG sobre infraestrutura crítica na Terra.
 
-Objetivos especificos:
+Objetivos específicos:
 
-- tratar dados climaticos reais da NASA POWER;
+- tratar dados climáticos reais da NASA POWER;
 - montar uma base oficial `regioes.csv`;
 - validar a estrutura e qualidade da base;
-- simular sensores de agua;
-- calcular indicadores ambientais, geoespaciais, hidricos, energeticos e de conectividade;
-- gerar classificacao final das regioes;
-- apresentar resultados em CSV, relatorios e dashboard HTML;
+- simular sensores de água;
+- calcular indicadores ambientais, geoespaciais, hídricos, energéticos e de conectividade;
+- gerar classificação final das regiões;
+- apresentar resultados em CSV, relatórios e dashboard HTML;
 - persistir resultados em Oracle opcional ou fallback CSV.
 
-### 2.2 Publico-alvo
+### 2.2 Público-alvo
 
-A POC pode apoiar discussoes academicas e demonstracoes para equipes de ESG, sustentabilidade, planejamento de data centers, infraestrutura tecnologica, gestao de risco e analise ambiental.
+A POC pode apoiar discussões acadêmicas e demonstrações para equipes de ESG, sustentabilidade, planejamento de data centers, infraestrutura tecnológica, gestão de risco e análise ambiental.
 
 ### 2.3 Escopo
 
-Esta POC esta dentro de um escopo academico. Ela nao representa laudo tecnico, auditoria ESG, estudo profissional de data center, analise hidrologica, projeto energetico ou avaliacao real de telecomunicacoes.
+Esta POC está dentro de um escopo acadêmico. Ela não representa laudo técnico, auditoria ESG, estudo profissional de data center, análise hidrológica, projeto energético ou avaliação real de telecomunicações.
 
-## 3. Desenvolvimento da Solucao
+## 3. Desenvolvimento da Solução
 
 ### 3.1 Tecnologias utilizadas
 
@@ -87,47 +91,47 @@ Esta POC esta dentro de um escopo academico. Ela nao representa laudo tecnico, a
 - CSV
 - HTML e SVG
 - NASA POWER
-- Regras deterministicas para simulacao e classificacao
+- Regras determinísticas para simulação e classificação
 
 ### 3.2 Arquitetura geral
 
 O projeto foi organizado como um pipeline em etapas:
 
-1. Extracao ou uso da base climatica NASA POWER.
-2. Tratamento dos dados climaticos diarios.
+1. Extração ou uso da base climática NASA POWER.
+2. Tratamento dos dados climáticos diários.
 3. Montagem do CSV oficial da POC.
-4. Validacao do CSV oficial.
-5. Calculo dos indicadores finais e sensores simulados.
-6. Geracao de dashboard HTML.
-7. Persistencia opcional em Oracle ou fallback CSV.
+4. Validação do CSV oficial.
+5. Cálculo dos indicadores finais e sensores simulados.
+6. Geração de dashboard HTML.
+7. Persistência opcional em Oracle ou fallback CSV.
 
-### 3.3 Dados climaticos
+### 3.3 Dados climáticos
 
-Os dados climaticos utilizados sao da NASA POWER, com periodo de referencia de 2025. As variaveis usadas incluem:
+Os dados climáticos utilizados são da NASA POWER, com período de referência de 2025. As variáveis usadas incluem:
 
-- temperatura media;
-- temperatura maxima;
-- temperatura minima;
-- precipitacao;
+- temperatura média;
+- temperatura máxima;
+- temperatura mínima;
+- precipitação;
 - umidade;
 - vento;
-- radiacao solar.
+- radiação solar.
 
-Esses dados sao tratados em `src/pipeline/02_tratar_dados_climaticos.py` e resultam no arquivo `data/nasa_power_2025_diario_tratado.csv`.
+Esses dados são tratados em `src/pipeline/02_tratar_dados_climaticos.py` e resultam no arquivo `data/nasa_power_2025_diario_tratado.csv`.
 
 ### 3.4 Montagem do `regioes.csv`
 
-O script `src/pipeline/03_montar_regioes_csv.py` consolida os dados climaticos anuais e adiciona indicadores parametrizados de risco hidrico, inundacao, sensibilidade territorial, infraestrutura critica e reuso pluvial.
+O script `src/pipeline/03_montar_regioes_csv.py` consolida os dados climáticos anuais e adiciona indicadores parametrizados de risco hídrico, inundação, sensibilidade territorial, infraestrutura crítica e reuso pluvial.
 
-O arquivo gerado e `data/regioes.csv`.
+O arquivo gerado é `data/regioes.csv`.
 
-### 3.5 Validacao
+### 3.5 Validação
 
 O script `src/pipeline/04_validar_regioes_csv.py` valida:
 
-- presenca das tres regioes oficiais;
-- colunas obrigatorias;
-- ausencia de nulos em campos criticos;
+- presença das três regiões oficiais;
+- colunas obrigatórias;
+- ausência de nulos em campos críticos;
 - scores entre 0 e 10;
 - origem dos dados em valores permitidos.
 
@@ -136,28 +140,28 @@ O script `src/pipeline/04_validar_regioes_csv.py` valida:
 O script `src/pipeline/05_calcular_resultados_poc.py` calcula:
 
 - indicador geoespacial simplificado;
-- indice de risco ambiental e climatico;
-- indice de potencial de reuso pluvial;
-- indice de qualidade simulada da agua;
-- indice de conectividade critica;
-- indice de disponibilidade energetica;
-- indice de refrigeracao e risco termico;
-- indice ESG e de resiliencia;
+- índice de risco ambiental e climático;
+- índice de potencial de reuso pluvial;
+- índice de qualidade simulada da água;
+- índice de conectividade crítica;
+- índice de disponibilidade energética;
+- índice de refrigeração e risco térmico;
+- índice ESG e de resiliência;
 - score final da POC;
-- classificacao final.
+- classificação final.
 
 ### 3.7 Sensores simulados
 
-Os sensores de agua sao simulados por regras deterministicas, considerando variaveis climaticas e de risco. A simulacao gera:
+Os sensores de água são simulados por regras determinísticas, considerando variáveis climáticas e de risco. A simulação gera:
 
-- nivel do reservatorio;
-- pH da agua;
+- nível do reservatório;
+- pH da água;
 - turbidez;
 - condutividade;
-- temperatura da agua;
-- classificacao da qualidade da agua.
+- temperatura da água;
+- classificação da qualidade da água.
 
-As classificacoes possiveis sao:
+As classificações possíveis são:
 
 - adequada;
 - necessita tratamento;
@@ -165,31 +169,31 @@ As classificacoes possiveis sao:
 
 ### 3.8 Oracle opcional e fallback CSV
 
-O projeto possui persistencia opcional em Oracle. O script `scripts/database/01_criar_tabelas_oracle.sql` cria as tabelas:
+O projeto possui persistência opcional em Oracle. O script `scripts/database/01_criar_tabelas_oracle.sql` cria as tabelas:
 
 - `AO_REGIOES`;
 - `AO_INDICADORES`;
 - `AO_RESULTADOS_POC`.
 
-As tabelas foram modeladas a partir das colunas reais de `data/resultados_regioes.csv`. A estrutura usa tipos Oracle compativeis com cada grupo de dados, como `VARCHAR2` para textos, `CHAR(2)` para estado, `NUMBER` para medidas e scores, e `CLOB` para o parecer de apoio a decisao. Tambem foram adicionadas restricoes de validacao para coordenadas, percentuais, pH e scores entre 0 e 10.
+As tabelas foram modeladas a partir das colunas reais de `data/resultados_regioes.csv`. A estrutura usa tipos Oracle compatíveis com cada grupo de dados, como `VARCHAR2` para textos, `CHAR(2)` para estado, `NUMBER` para medidas e scores, e `CLOB` para o parecer de apoio à decisão. Também foram adicionadas restrições de validação para coordenadas, percentuais, pH e scores entre 0 e 10.
 
-O script `src/pipeline/07_persistir_oracle_csv.py` tenta gravar os dados no Oracle quando as credenciais estao configuradas. Caso contrario, gera fallback automatico em CSV dentro de `output/fallback_csv`.
+O script `src/pipeline/07_persistir_oracle_csv.py` tenta gravar os dados no Oracle quando as credenciais estão configuradas. Caso contrário, gera fallback automático em CSV dentro de `output/fallback_csv`.
 
 O script `src/pipeline/08_consultar_resultados_oracle.py` permite consultar o ranking salvo no Oracle diretamente pelo terminal.
 
-O arquivo `scripts/database/02_consultas_oracle.sql` concentra consultas de validacao para contagem de registros, ranking final, sensores simulados, risco ambiental, potencial de reuso pluvial e resiliencia ESG.
+O arquivo `scripts/database/02_consultas_oracle.sql` concentra consultas de validação para contagem de registros, ranking final, sensores simulados, risco ambiental, potencial de reuso pluvial e resiliência ESG.
 
-### 3.9 Visualizacoes
+### 3.9 Visualizações
 
 O script `src/frontend/gerar_dashboard_html.py` gera `output/dashboard_poc.html`, contendo:
 
 - ranking final;
-- grafico de score final;
-- grafico ESG/resiliencia;
-- grafico de risco ambiental;
-- grafico de conectividade;
-- grafico de energia;
-- grafico de reuso pluvial;
+- gráfico de score final;
+- gráfico ESG/resiliência;
+- gráfico de risco ambiental;
+- gráfico de conectividade;
+- gráfico de energia;
+- gráfico de reuso pluvial;
 - mapa simplificado por latitude e longitude;
 - tabela de sensores simulados.
 
@@ -197,41 +201,41 @@ O script `src/frontend/gerar_dashboard_html.py` gera `output/dashboard_poc.html`
 
 ### 4.1 Ranking final
 
-| Posicao | Regiao | Score final | Classificacao |
+| Posição | Região | Score final | Classificação |
 |---|---|---:|---|
-| 1 | Barueri/Tambore - SP | 7.11 | favoravel |
-| 2 | Curitiba - PR | 6.81 | atencao |
-| 3 | Rio de Janeiro - Barra/Jacarepagua/Parque Olimpico - RJ | 5.92 | atencao |
+| 1 | Barueri/Tamboré - SP | 7.11 | favorável |
+| 2 | Curitiba - PR | 6.81 | atenção |
+| 3 | Rio de Janeiro/RJ | 5.92 | atenção |
 
-### 4.2 Qualidade simulada da agua
+### 4.2 Qualidade simulada da água
 
-| Regiao | Qualidade simulada | Observacao |
+| Região | Qualidade simulada | Observação |
 |---|---|---|
-| Barueri/Tambore | adequada | pH 6.81, turbidez 4.22 NTU, nivel 25% |
-| Curitiba | necessita tratamento | pH 7.17, turbidez 5.24 NTU, nivel 25% |
-| Rio de Janeiro | necessita tratamento | pH 6.95, turbidez 7.34 NTU, nivel 25% |
+| Barueri/Tamboré | adequada | pH 6.81, turbidez 4.22 NTU, nível 25% |
+| Curitiba | necessita tratamento | pH 7.17, turbidez 5.24 NTU, nível 25% |
+| Rio de Janeiro/RJ | necessita tratamento | pH 6.95, turbidez 7.34 NTU, nível 25% |
 
 ### 4.3 Indicadores selecionados
 
-| Regiao | ESG/resiliencia | Risco ambiental | Potencial pluvial |
+| Região | ESG/resiliência | Risco ambiental | Potencial pluvial |
 |---|---:|---:|---:|
-| Barueri/Tambore | 7.34 | 4.18 | 3017.40 m3/ano |
+| Barueri/Tamboré | 7.34 | 4.18 | 3017.40 m3/ano |
 | Curitiba | 7.56 | 4.40 | 4542.56 m3/ano |
-| Rio de Janeiro | 6.65 | 6.24 | 4045.04 m3/ano |
+| Rio de Janeiro/RJ | 6.65 | 6.24 | 4045.04 m3/ano |
 
-### 4.4 Analise dos resultados
+### 4.4 Análise dos resultados
 
-Barueri/Tambore ficou em primeiro lugar por apresentar bom equilibrio entre infraestrutura critica, conectividade, menor risco de inundacao parametrizado e classificacao simulada de agua adequada.
+Barueri/Tamboré ficou em primeiro lugar por apresentar bom equilíbrio entre infraestrutura crítica, conectividade, menor risco de inundação parametrizado e classificação simulada de água adequada.
 
-Curitiba ficou em segundo lugar. Apesar do bom potencial pluvial e bom indice ESG/resiliencia, recebeu classificacao final de atencao por exigir tratamento da agua simulada e apresentar indicadores intermediarios de infraestrutura.
+Curitiba ficou em segundo lugar. Apesar do bom potencial pluvial e bom índice ESG/resiliência, recebeu classificação final de atenção por exigir tratamento da água simulada e apresentar indicadores intermediários de infraestrutura.
 
-Rio de Janeiro ficou em terceiro lugar. A regiao tem boa infraestrutura parametrizada, mas apresentou maior risco de inundacao e maior risco ambiental/climatico no modelo, ficando em classificacao de atencao.
+Rio de Janeiro/RJ ficou em terceiro lugar. A região tem boa infraestrutura parametrizada, mas apresentou maior risco de inundação e maior risco ambiental/climático no modelo, ficando em classificação de atenção.
 
-### 4.5 Validacao da camada Oracle
+### 4.5 Validação da camada Oracle
 
-A camada Oracle opcional foi testada no Oracle SQL Developer com as credenciais academicas da FIAP.
+A camada Oracle opcional foi testada no Oracle SQL Developer com as credenciais acadêmicas da FIAP.
 
-Evidencias da validacao:
+Evidências da validação:
 
 - tabelas `AO_REGIOES`, `AO_INDICADORES` e `AO_RESULTADOS_POC` criadas com sucesso;
 - carga executada pelo script `src/pipeline/07_persistir_oracle_csv.py` em modo Oracle;
@@ -239,42 +243,42 @@ Evidencias da validacao:
 - `AO_INDICADORES` retornou 3 registros;
 - `AO_RESULTADOS_POC` retornou 3 registros;
 - consulta de ranking retornou Barueri, Curitiba e Rio de Janeiro na ordem esperada;
-- consulta de sensores simulados retornou as 3 regioes com pH, turbidez, condutividade e classificacao da agua;
-- consulta de risco ambiental retornou as 3 regioes com relacionamento entre `AO_REGIOES`, `AO_INDICADORES` e `AO_RESULTADOS_POC`.
+- consulta de sensores simulados retornou as 3 regiões com pH, turbidez, condutividade e classificação da água;
+- consulta de risco ambiental retornou as 3 regiões com relacionamento entre `AO_REGIOES`, `AO_INDICADORES` e `AO_RESULTADOS_POC`.
 
 Resultado do ranking validado no Oracle:
 
-| Posicao | Cidade | Estado | Score final | Classificacao |
+| Posição | Cidade | Estado | Score final | Classificação |
 |---|---|---|---:|---|
-| 1 | Barueri | SP | 7.11 | favoravel |
-| 2 | Curitiba | PR | 6.81 | atencao |
-| 3 | Rio de Janeiro | RJ | 5.92 | atencao |
+| 1 | Barueri | SP | 7.11 | favorável |
+| 2 | Curitiba | PR | 6.81 | atenção |
+| 3 | Rio de Janeiro | RJ | 5.92 | atenção |
 
 ## 5. Conclusões e possíveis evoluções fora do escopo da POC atual
 
-### 5.1 Conclusao
+### 5.1 Conclusão
 
-O Acqua Orbit DC demonstra que dados climaticos por coordenadas, indicadores ambientais, sensores simulados e criterios de infraestrutura critica podem ser combinados para gerar uma leitura comparativa simples e explicavel sobre regioes candidatas a data centers sustentaveis.
+O Acqua Orbit DC demonstra que dados climáticos por coordenadas, indicadores ambientais, sensores simulados e critérios de infraestrutura crítica podem ser combinados para gerar uma leitura comparativa simples e explicável sobre regiões candidatas a data centers sustentáveis.
 
-A POC atende ao objetivo de conectar economia espacial, analise de dados e tomada de decisao na Terra, usando dados climaticos publicos e uma metodologia transparente.
+A POC atende ao objetivo de conectar economia espacial, análise de dados e tomada de decisão na Terra, usando dados climáticos públicos e uma metodologia transparente.
 
 ### 5.2 Possíveis evoluções futuras fora do escopo da POC atual
 
-Possiveis evolucoes:
+Possíveis evoluções:
 
-- incluir novas regioes;
+- incluir novas regiões;
 - usar dados ambientais reais adicionais;
 - integrar mapas interativos;
-- ampliar a modelagem de risco hidrico e inundacao;
-- conectar a uma aplicacao web;
-- enriquecer a camada Oracle com consultas historicas;
-- comparar cenarios com pesos de decisao diferentes.
+- ampliar a modelagem de risco hídrico e inundação;
+- conectar a uma aplicação web;
+- enriquecer a camada Oracle com consultas históricas;
+- comparar cenários com pesos de decisão diferentes.
 
-## 6. Referencias
+## 6. Referências
 
 - NASA POWER: https://power.larc.nasa.gov/
 - FIAP Global Solution 2026.1 - tema Economia Espacial.
-- Documentacao Oracle Python `oracledb`: https://python-oracledb.readthedocs.io/
+- Documentação Oracle Python `oracledb`: https://python-oracledb.readthedocs.io/
 - Pandas: https://pandas.pydata.org/
 
 ## 7. Anexos
@@ -315,17 +319,18 @@ python src\pipeline\09_gerar_pdf_documentacao.py
 
 ### 7.3 Dashboards
 
-- HTML estatico: `src/output/dashboard_poc.html`
-- Streamlit: `src/frontend/dashboard_streamlit.py` (visoes POC HTML e analise interativa IA)
+- HTML estático: `src/output/dashboard_poc.html`
+- Streamlit: `src/frontend/dashboard_streamlit.py` (visões POC HTML e análise interativa IA)
 
-### 7.4 Repositorio do projeto
+### 7.4 Repositório do projeto
 
 https://github.com/georgiamendesrocha/Fiap_GS_acquaorbit_DC
 
-### 7.5 Video demonstrativo
+### 7.5 Vídeo demonstrativo
 
-- Gravar ate 5 minutos demonstrando menu, pipeline, dashboards e ranking.
-- Publicar no YouTube como **Nao listado**.
+- Link do vídeo pendente. Será inserido em breve após a publicação no YouTube.
+- Gravar até 5 minutos demonstrando menu, pipeline, dashboards e ranking.
+- Publicar no YouTube como **não listado**.
 - Colocar a URL em `config/entrega_gs.py` (campo `LINK_VIDEO_YOUTUBE`).
-- Regenerar o PDF (`python menu.py` -> opcao 10). O link aparece na capa e na secao 6 do PDF.
-- Para o podio: definir `CONCORRER_PODIO = True` e dizer **QUERO CONCORRER** nos primeiros segundos do video.
+- Regenerar o PDF (`python menu.py` -> opção 10). O link aparece na capa e na seção 6 do PDF.
+- Para o pódio: definir `CONCORRER_PODIO = True` e dizer **QUERO CONCORRER** nos primeiros segundos do vídeo.

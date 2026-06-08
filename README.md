@@ -16,7 +16,7 @@ Repositório: https://github.com/georgiamendesrocha/Fiap_GS_acquaorbit_DC
 
 | Item | Valor |
 |------|--------|
-| Link do vídeo | Aguardando link |
+| Link do vídeo | Link do vídeo pendente. Será inserido em breve após a publicação no YouTube. |
 | Concorrência ao pódio | Sim |
 
 ## 👨‍🎓 Integrantes
@@ -39,7 +39,11 @@ Repositório: https://github.com/georgiamendesrocha/Fiap_GS_acquaorbit_DC
 
 ## 📜 Descrição
 
-POC da Global Solution 2026.1 que compara três regiões candidatas a data center (Barueri/SP, Rio de Janeiro/RJ e Curitiba/PR) usando dados climáticos da NASA POWER, indicadores ambientais parametrizados, sensores de água simulados e regras de classificação ESG.
+O Acqua Orbit DC é uma solução acadêmica desenvolvida para apoiar a análise de regiões candidatas à instalação ou operação de data centers sustentáveis. A aplicação compara Barueri/SP, Rio de Janeiro/RJ e Curitiba/PR a partir de dados climáticos da NASA POWER, indicadores ambientais parametrizados, sensores de água simulados e regras de classificação ESG.
+
+A proposta transforma dados climáticos, ambientais e operacionais em uma visão simples, comparativa e demonstrável, indicando quais regiões apresentam melhor equilíbrio entre risco ambiental, potencial de reuso pluvial, infraestrutura crítica e resiliência.
+
+Embora tenha sido desenvolvida no contexto acadêmico da Global Solution 2026.1, a estrutura da solução foi pensada para permitir evolução futura com dados em tempo real, sensores físicos, integração com banco de dados e apoio técnico a decisões ambientais e operacionais.
 
 O projeto entrega pipeline executável via `python menu.py`, CSVs de resultado, dashboards (HTML e Streamlit), análise de séries temporais em R (opção **R**), modelo de IA (RandomForest), persistência opcional em Oracle, integração com as disciplinas do semestre e PDF de documentação consolidado.
 
@@ -61,7 +65,7 @@ assets/               logo-fiap.png
 config/               entrega_gs.py, oracle.example.env
 document/             ai_project_document_fiap.md
 scripts/database/     SQL Oracle (01, 02) e modelagem (03)
-scripts/r/            analise de series temporais em R
+scripts/r/            análise de séries temporais em R
 hardware/esp32/       arquitetura de sensores (evolucao embarcada)
 src/
   api/                nasa_power.py
@@ -94,7 +98,7 @@ README.md
 | 8 (opcional) | `src/pipeline/08_consultar_resultados_oracle.py` | consulta no terminal |
 | 9 | `src/ml/treinar_modelo.py` | `src/models/score_regiao_model.joblib` |
 | 10 | `src/pipeline/09_gerar_pdf_documentacao.py` | `src/output/acqua_orbit_dc_documentacao.pdf` |
-| R (lote) | `scripts/r/analise_serie_climatica.R` | `src/output/r_relatorio_series_temporais.md`, `r_graficos/` |
+| R (complementar) | `scripts/r/analise_serie_climatica.R` | `src/output/r_relatorio_series_temporais.md`, `r_graficos/` |
 
 ## Prints das etapas (terminal)
 
@@ -104,7 +108,7 @@ Cada etapa confirma no terminal o que foi processado e onde os arquivos foram sa
 
 ```text
 Consultando NASA POWER: Barueri/Tamboré
-Consultando NASA POWER: Rio de Janeiro - Barra/Jacarepaguá/Parque Olímpico
+Consultando NASA POWER: Rio de Janeiro/RJ
 Consultando NASA POWER: Curitiba
 Arquivos gerados:
 src/data/nasa_power_2025_diario.csv
@@ -114,13 +118,13 @@ src/data/clima_regioes_2025.csv
 ### Etapa 2 — Tratamento climático
 
 ```text
-Acqua Orbit DC - Tratamento dos dados climaticos diarios
+Acqua Orbit DC - Tratamento dos dados climáticos diários
 Base carregada: 1095 registros
-Base diaria tratada com cabecalho interpretavel
-Validacao concluida
+Base diária tratada com cabeçalho interpretável
+Validação concluída
 Arquivos salvos com sucesso
 
-Saidas:
+Saídas:
 - src/data/nasa_power_2025_diario_tratado.csv
 - src/output/relatorio_tratamento_dados_climaticos.md
 ```
@@ -129,7 +133,7 @@ Saidas:
 
 ```text
 Acqua Orbit DC - Montagem do regioes.csv
-Resumo climatico preparado: 3 regioes
+Resumo climático preparado: 3 regiões
 Indicadores complementares integrados
 Arquivo regioes.csv gerado com sucesso
 - src/data/regioes.csv
@@ -139,7 +143,7 @@ Arquivo regioes.csv gerado com sucesso
 ### Etapa 4 — Validação
 
 ```text
-Ácqua Orbit DC — Validação do regioes.csv
+Acqua Orbit DC — Validação do regioes.csv
 Validação aprovada.
 Relatório: src/output/relatorio_validacao_regioes_csv.md
 ```
@@ -147,10 +151,10 @@ Relatório: src/output/relatorio_validacao_regioes_csv.md
 ### Etapa 5 — Resultados e sensores
 
 ```text
-Acqua Orbit DC - Calculo dos resultados finais da POC
-Base regioes carregada: 3 regioes
+Acqua Orbit DC - Cálculo dos resultados finais da POC
+Base de regiões carregada: 3 regiões
 Indicadores finais calculados
-Etapa 05 concluida com sucesso
+Etapa 05 concluída com sucesso
 - src/data/resultados_regioes.csv
 - src/output/relatorio_resultados_poc.md
 ```
@@ -160,15 +164,15 @@ Ranking gravado no relatório:
 ```text
 1. Barueri/Tamboré - score 7.11 - favorável
 2. Curitiba - score 6.81 - atenção
-3. Rio de Janeiro - Barra/Jacarepaguá/Parque Olímpico - score 5.92 - atenção
+3. Rio de Janeiro/RJ - score 5.92 - atenção
 ```
 
 ### Etapa 6 — Dashboard HTML
 
 ```text
-Acqua Orbit DC - Geracao de visualizacoes da POC
-Resultados carregados: 3 regioes
-Etapa 06 concluida com sucesso
+Acqua Orbit DC - Geração de visualizações da POC
+Resultados carregados: 3 regiões
+Etapa 06 concluída com sucesso
 - src/output/dashboard_poc.html
 - src/output/relatorio_visualizacoes_poc.md
 ```
@@ -178,19 +182,19 @@ Etapa 06 concluida com sucesso
 **Com Oracle configurado (`.env`):**
 
 ```text
-Acqua Orbit DC - Persistencia Oracle opcional / CSV fallback
-Resultados carregados: 3 regioes
+Acqua Orbit DC - Persistência Oracle opcional / CSV fallback
+Resultados carregados: 3 regiões
 Credenciais Oracle carregadas de: .env
-Usuario Oracle: RM571375
-Estrutura Oracle ja existente.
-Persistencia concluida em modo: Oracle
+Usuário Oracle: RM571375
+Estrutura Oracle já existente.
+Persistência concluída em modo: Oracle
 - src/output/relatorio_persistencia_oracle_csv.md
 ```
 
 **Sem Oracle (fallback automático):**
 
 ```text
-Persistencia concluida em modo: CSV fallback
+Persistência concluída em modo: CSV fallback
 - src/output/relatorio_persistencia_oracle_csv.md
 - src/output/fallback_csv/ao_regioes.csv
 - src/output/fallback_csv/ao_indicadores.csv
@@ -201,8 +205,8 @@ Persistencia concluida em modo: CSV fallback
 
 ```text
 Credenciais Oracle carregadas de: .env
-Usuario Oracle: RM571375
-Estrutura Oracle ja existente.
+Usuário Oracle: RM571375
+Estrutura Oracle já existente.
 Ranking Oracle - Acqua Orbit DC
 --------------------------------
 Barueri / SP | score 7.11 | favorável
@@ -217,20 +221,20 @@ Acqua Orbit DC - Treinamento do modelo de IA
 ------------------------------------------------
 Modelo salvo em: src/models/score_regiao_model.joblib
 Metadados: src/models/score_regiao_metadata.json
-Treinamento concluido com sucesso.
+Treinamento concluído com sucesso.
 ```
 
-### Análise R — séries temporais (ação em lote `R` no menu)
+### Análise R — séries temporais (ação complementar `R` no menu)
 
 ```text
 >> Executando: scripts\r\analise_serie_climatica.R
 --------------------------------------------------------------
-Analise R concluida.
+Análise R concluída.
 - src/output/r_relatorio_series_temporais.md
 - src/output/r_resumo_series_temporais.json
-- Graficos em: src/output/r_graficos
+- Gráficos em: src/output/r_graficos
 --------------------------------------------------------------
-Analise R concluida com sucesso.
+Análise R concluída com sucesso.
 ```
 
 **Pré-requisito:** etapa 2. Se `Rscript` não estiver no PATH, o menu exibe erro com instrução de instalação.
@@ -238,7 +242,7 @@ Analise R concluida com sucesso.
 ### Etapa 10 — PDF de documentação
 
 ```text
-Acqua Orbit DC - Geracao do PDF de documentacao
+Acqua Orbit DC - Geração do PDF de documentação
 ------------------------------------------------
 Capturas geradas: 4 imagens em src/output/pdf_capturas/
 PDF gerado: src/output/acqua_orbit_dc_documentacao.pdf
@@ -248,7 +252,7 @@ Capturas no PDF: 4
 
 > Se `LINK_VIDEO_YOUTUBE` estiver vazio em `config/entrega_gs.py`, aparece também: `Aviso: LINK_VIDEO_YOUTUBE vazio em config/entrega_gs.py`
 
-**Ações em lote no menu:** `P` (pipeline 2–7), `N` (com NASA 1–7), `R` (séries temporais em R, após etapa 2), `T`/`S`/`D` (IA e dashboards). Os prints das etapas aparecem em sequência ao usar `P`.
+**Ações em lote no menu:** `P` (pipeline 2–7), `N` (com NASA 1–7), `R` (séries temporais em R, complementar e após etapa 2), `T`/`S`/`D` (IA e dashboards). Os prints das etapas aparecem em sequência ao usar `P`.
 
 ## Entregáveis para avaliação
 
@@ -334,13 +338,13 @@ python menu.py
 | **Ações em lote** | |
 | P | Pipeline etapas 2 a 7 em sequência |
 | N | Pipeline etapas 1 a 7 (com NASA) |
-| R | Análise R (após etapa 2; requer `Rscript`) |
+| R | Análise R (complementar, após etapa 2; requer `Rscript`) |
 | T | Treinar IA (atalho da opção 9) |
 | D | Abrir `dashboard_poc.html` (requer etapa 6) |
 | S | Streamlit: POC HTML + análise IA (requer etapa 5) |
 | 0 | Sair |
 
-**Ordem sugerida para demonstração e vídeo:** `P` → `R` → `9` (ou `T`) → `S` → `10`.
+**Ordem sugerida para demonstração e vídeo:** `P` → `9` (ou `T`) → `S` → `10`. Opcional: `R`, se o `Rscript` estiver instalado. A opção `N` inclui a etapa 1 (NASA POWER), que requer internet para consultar a NASA POWER.
 
 ### Execução manual
 
@@ -381,13 +385,13 @@ Gera `src/output/acqua_orbit_dc_documentacao.pdf` com a mesma abertura do README
 
 1. Capa — integrantes, **QUERO CONCORRER** (pódio), professores, repositório e vídeo
 2. Introdução — descrição, objetivo e tema espacial
-3. Desenvolvimento — tecnologias, pipeline, menu (`P`, `R`, `9`, `S`) e entregas
+3. Desenvolvimento — tecnologias, pipeline, menu (`P`, `9`, `S`, `10`; `R` opcional) e entregas
 4. Resultados Esperados — ranking, capturas, análise R e IA
 5. Conclusões — origem dos dados, disciplinas, ética, segurança, sensores, formação social
 6. Anexo — trechos de código em texto
 7. Links para entrega
 
-Pré-requisitos: etapa 5 para o PDF base; etapa 9 para capturas Streamlit IA; opção **R** para gráficos e resumo R no PDF.
+Pré-requisitos: etapa 5 para o PDF base; etapa 9 para capturas Streamlit IA. A opção **R** é complementar e adiciona gráficos e resumo R ao PDF quando executada.
 
 ```powershell
 python src\pipeline\09_gerar_pdf_documentacao.py
@@ -397,8 +401,8 @@ python src\pipeline\09_gerar_pdf_documentacao.py
 
 Checklist final (além do repositório Git):
 
-1. Gravar vídeo de até 5 min (`menu.py` → `P` → `R` → `9` → `S` → dashboards).
-2. Rodar análise R antes do PDF: `python menu.py` → opção **R** (ação em lote).
+1. Gravar vídeo de até 5 min (`menu.py` → `P` → `9` ou `T` → `S` → dashboards).
+2. Opcionalmente, rodar análise R antes do PDF: `python menu.py` → opção **R** (ação complementar, se o `Rscript` estiver instalado).
 3. Subir no YouTube como **não listado**.
 4. Editar `config/entrega_gs.py`:
    - `LINK_VIDEO_YOUTUBE` = URL do vídeo
@@ -437,7 +441,7 @@ python src\pipeline\07_persistir_oracle_csv.py
 python src\pipeline\08_consultar_resultados_oracle.py
 ```
 
-Sem Oracle, a etapa 7 grava em `src/output/fallback_csv/` e exibe `Persistencia concluida em modo: CSV fallback`.
+Sem Oracle, a etapa 7 grava em `src/output/fallback_csv/` e exibe `Persistência concluída em modo: CSV fallback`.
 
 Consultas prontas: `scripts/database/02_consultas_oracle.sql`.
 
@@ -464,7 +468,7 @@ Rio de Janeiro / RJ | score 5.92 | atenção
 |---|--------|-------|---------------|
 | 1 | Barueri/Tamboré | 7.11 | favorável |
 | 2 | Curitiba | 6.81 | atenção |
-| 3 | Rio de Janeiro (Barra/Jacarepaguá) | 5.92 | atenção |
+| 3 | Rio de Janeiro/RJ | 5.92 | atenção |
 
 ## Limites
 
@@ -500,7 +504,7 @@ Análise da série diária NASA POWER (disciplina **Statistical Computing with R
 
 ```powershell
 python menu.py
-# opcao R (ou manualmente: Rscript scripts\r\analise_serie_climatica.R)
+# opção R (ou manualmente: Rscript scripts\r\analise_serie_climatica.R)
 ```
 
 **Saídas:**
