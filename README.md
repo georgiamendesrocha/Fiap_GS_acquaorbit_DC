@@ -16,7 +16,7 @@ Repositório: https://github.com/georgiamendesrocha/Fiap_GS_acquaorbit_DC
 
 | Item | Valor |
 |------|--------|
-| Link do vídeo | Link do vídeo pendente. Será inserido em breve após a publicação no YouTube. |
+| Link do vídeo | https://youtu.be/5ghN7MGLzkE |
 | Concorrência ao pódio | Sim |
 
 ## 👨‍🎓 Integrantes
